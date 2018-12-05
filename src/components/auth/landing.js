@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Jumbotron, Button } from 'reactstrap'
 import LoginModal from './login'
 import RegisterModal from './register'
+import api from './../../modules/apiManager'
 
 export default class Landing extends Component {
 
@@ -21,6 +22,23 @@ export default class Landing extends Component {
     this.setState({ registerModal: !this.state.registerModal })
   }
 
+  handleFieldChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
+  handleLoginSubmit = (e) => {
+    e.preventDefault()
+    let obj = {
+      email: this.state.email,
+      password: this.state.password
+    }
+
+    console.log(obj)
+  }
+
+
   render() {
     return (
       <React.Fragment>
@@ -32,6 +50,8 @@ export default class Landing extends Component {
           <p className="lead">
             <Button className="m-1" color="primary" onClick={() => this.toggleLoginModal()}>Login</Button>
             <LoginModal
+              handleLoginSubmit={this.handleLoginSubmit}
+              handleFieldChange={this.handleFieldChange}
               modal={this.state.loginModal}
               toggle={this.toggleLoginModal} />
             <Button className="m-1" color="primary" onClick={() => this.toggleRegisterModal()}>Register</Button>
