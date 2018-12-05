@@ -6,7 +6,7 @@ export default class RegisterModal extends Component {
     return (
       <React.Fragment>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.props.toggle}>Register</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>Register A New Account</ModalHeader>
           <Form onSubmit={(e) => this.props.handleRegisterSubmit(e)}>
             <ModalBody >
               <FormGroup >
