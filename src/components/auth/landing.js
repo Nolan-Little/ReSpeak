@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Jumbotron, Button } from 'reactstrap'
 import LoginModal from './login'
 import RegisterModal from './register'
-import api from './../../modules/apiManager'
+import validate from '../../modules/validateUser';
 
 export default class Landing extends Component {
 
@@ -32,10 +32,18 @@ export default class Landing extends Component {
     e.preventDefault()
     let obj = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      unsuccesfulLogin: false
     }
 
-    console.log(obj)
+    validate.existingUser(obj)
+      .then((res) => {
+        if (res) {
+          this.props.successfulLogin()
+        } else if (res === false){
+          this.setState({unsuccesfulLogin:true})
+        }
+      })
   }
 
 
@@ -44,18 +52,19 @@ export default class Landing extends Component {
       <React.Fragment>
         <Jumbotron>
           <h1 className="display-3">ReSpeak!</h1>
-          <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
+          <p className="lead">Organize your thoughts</p>
           <hr className="my-2" />
-          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
           <p className="lead">
             <Button className="m-1" color="primary" onClick={() => this.toggleLoginModal()}>Login</Button>
             <LoginModal
+              unsuccesfulLogin={this.state.unsuccesfulLogin}
               handleLoginSubmit={this.handleLoginSubmit}
               handleFieldChange={this.handleFieldChange}
               modal={this.state.loginModal}
               toggle={this.toggleLoginModal} />
             <Button className="m-1" color="primary" onClick={() => this.toggleRegisterModal()}>Register</Button>
             <RegisterModal
+              handleFieldChange={this.handleFieldChange}
               modal={this.state.registerModal}
               toggle={this.toggleRegisterModal} />
           </p>

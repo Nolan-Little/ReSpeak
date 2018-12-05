@@ -1,5 +1,5 @@
 import API from './apiManager'
-import userSession from "./UserSession"
+import userSession from "./userSession"
 
 const validate = {
   newUser(entryObject) {
@@ -20,9 +20,9 @@ const validate = {
       .then((user) => {
         if (user[0] && user[0].password === entryObject.password) {
           userSession.logInUser(user[0].id)
-          // document.querySelector("#loginForm").reset()
+          return true
         } else {
-          alert("Incorrect email/password-- please try again. If you're new here, please Register. ")
+          return false
         }
       })
   }
