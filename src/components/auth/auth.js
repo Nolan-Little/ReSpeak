@@ -4,6 +4,8 @@ import Landing from './landing'
 
 export default class Auth extends Component {
 
+
+
   render() {
     return (
       <React.Fragment>
@@ -11,7 +13,7 @@ export default class Auth extends Component {
           this.props.isAuthenticated ?
              <ApplicationViews/>
             :
-             <Landing/>
+             <Landing successfulLogin={this.props.successfulLogin}/>
         }
       </React.Fragment>
     )

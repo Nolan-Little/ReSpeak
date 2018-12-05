@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class LoginModal extends Component {
   render() {
@@ -7,13 +7,32 @@ export default class LoginModal extends Component {
       <React.Fragment>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>Login</ModalHeader>
-          <ModalBody>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.props.toggle}>Do Something</Button>{' '}
-            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-          </ModalFooter>
+          <Form onSubmit={(e) => this.props.handleLoginSubmit(e)}>
+            <ModalBody >
+              <FormGroup >
+                <Label for="taskname">email:</Label>
+                <Input
+                  invalid={this.props.unsuccesfulLogin ? true : null}
+                  required ref={this.nameInput} onChange={this.props.handleFieldChange} type="email" name="taskName" id="email" placeholder="Email" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleDate">password:</Label>
+                <Input
+                  invalid={this.props.unsuccesfulLogin ? true : null}
+                  required onChange={this.props.handleFieldChange} type="password" name="date" id="password" placeholder="Password" />
+              </FormGroup>
+            </ModalBody>
+            <ModalFooter>
+
+              {this.props.unsuccesfulLogin ?
+              <Alert color="danger">Incorrect email or password</Alert>
+              : null
+              }
+
+              <Button color="primary" type="submit">Login</Button>{' '}
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            </ModalFooter>
+          </Form>
         </Modal>
       </React.Fragment>
     )
