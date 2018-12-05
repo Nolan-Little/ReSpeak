@@ -13,7 +13,7 @@ class App extends Component {
 
   componentDidMount(){
     if (userSession.getUser()){
-      this.setState({isAuthenticated: true})
+      this.setState({isAuthenticated: !this.state.isAuthenticated})
     }
   }
 
