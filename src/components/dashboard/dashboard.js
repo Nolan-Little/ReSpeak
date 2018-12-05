@@ -3,13 +3,18 @@ import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/rea
 
 
 export default class Dashboard extends Component {
+
+  selectCollection = (selected) => {
+    this.setState({currentCollection:selected})
+  }
   render() {
     return (
       <React.Fragment>
         <h1 className="text-center">Im a dashboard</h1>
         <SideNav
           onSelect={(selected) => {
-            // Add your code here
+            console.log(selected)
+            this.selectCollection(selected)
           }}
         >
           <SideNav.Toggle />
