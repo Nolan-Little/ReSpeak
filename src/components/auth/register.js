@@ -29,7 +29,7 @@ export default class RegisterModal extends Component {
               : null
               }
 
-              <Button color="primary" type="submit">Login</Button>{' '}
+              <Button color="primary" type="submit">Register</Button>{' '}
               <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
             </ModalFooter>
           </Form>
