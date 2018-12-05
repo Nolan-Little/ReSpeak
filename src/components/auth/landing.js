@@ -10,7 +10,9 @@ export default class Landing extends Component {
     super(props);
     this.state = {
       loginModal: false,
-      registerModal: false
+      registerModal: false,
+      unsuccesfulLogin: false,
+      unsuccesfulRegister: false
     }
   }
 
@@ -33,7 +35,6 @@ export default class Landing extends Component {
     let obj = {
       email: this.state.email,
       password: this.state.password,
-      unsuccesfulLogin: false
     }
 
     validate.existingUser(obj)
@@ -42,6 +43,23 @@ export default class Landing extends Component {
           this.props.successfulLogin()
         } else if (res === false){
           this.setState({unsuccesfulLogin:true})
+        }
+      })
+  }
+
+  handleRegisterSubmit = (e) => {
+    e.preventDefault()
+    let obj = {
+      email: this.state.RegisterEmail,
+      password: this.state.RegisterPassword,
+    }
+
+    validate.newUser(obj)
+      .then((res) => {
+        if (res) {
+          this.props.successfulLogin()
+        } else if (res === false){
+          this.setState({unsuccesfulRegister:true})
         }
       })
   }
@@ -64,6 +82,8 @@ export default class Landing extends Component {
               toggle={this.toggleLoginModal} />
             <Button className="m-1" color="primary" onClick={() => this.toggleRegisterModal()}>Register</Button>
             <RegisterModal
+              unsuccesfulRegister={this.state.unsuccesfulRegister}
+              handleRegisterSubmit={this.handleRegisterSubmit}
               handleFieldChange={this.handleFieldChange}
               modal={this.state.registerModal}
               toggle={this.toggleRegisterModal} />

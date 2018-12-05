@@ -9,9 +9,10 @@ const validate = {
           return API.saveData("users", entryObject)
             .then((user) => {
               userSession.logInUser(user.id)
+              return true
             })
         } else {
-          alert("Oops! This email is already in use. Please use a different email, or return to the login page if you already have an account with us.")
+          return false
         }
       })
   },
