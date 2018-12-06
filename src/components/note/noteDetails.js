@@ -2,16 +2,6 @@ import React, { Component } from 'react'
 import { Input, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 
 export default class NoteDetails extends Component {
-  constructor() {
-    super()
-    this.state = {
-      editing: false
-    }
-  }
-
-  toggleEditing = () => {
-    this.setState({ editing: !this.state.editing })
-  }
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
@@ -19,10 +9,11 @@ export default class NoteDetails extends Component {
     this.setState(stateToChange)
   }
 
+
   render() {
     return (
 
-      this.state.editing
+      this.props.editing
 
         ?
             // ALLOW EDITING
@@ -35,8 +26,8 @@ export default class NoteDetails extends Component {
           </ModalBody>
           <ModalFooter>
             <audio controls></audio>
-            <Button color="primary" onClick={() => this.toggleEditing()}>Save Changes</Button>{' '}
-            <Button color="secondary" onClick={() => this.toggleEditing()}>Cancel</Button>
+            <Button color="primary" onClick={() => this.props.toggleEditing()}>Save Changes</Button>{' '}
+            <Button color="secondary" onClick={() => this.props.toggleEditing()}>Cancel</Button>
           </ModalFooter>
         </Modal>
 
@@ -49,7 +40,7 @@ export default class NoteDetails extends Component {
           </ModalBody>
           <ModalFooter>
             <audio controls></audio>
-            <Button color="primary" onClick={() => this.toggleEditing()}>Edit</Button>{' '}
+            <Button color="primary" onClick={() => this.props.toggleEditing()}>Edit</Button>{' '}
             <Button color="primary">Delete</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggle()}>Save</Button>
           </ModalFooter>
