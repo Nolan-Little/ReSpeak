@@ -24,7 +24,7 @@ export default class ApplicationViews extends Component {
   render(){
     return (
       <React.Fragment>
-        <Dashboard collections={this.state.collections}/>
+        <Dashboard successfulLogout={this.props.successfulLogout} collections={this.state.collections}/>
       </React.Fragment>
     )
   }

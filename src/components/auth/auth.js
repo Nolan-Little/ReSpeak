@@ -11,7 +11,7 @@ export default class Auth extends Component {
       <React.Fragment>
         {
           this.props.isAuthenticated ?
-             <ApplicationViews/>
+             <ApplicationViews successfulLogout={this.props.successfulLogout}/>
             :
              <Landing successfulLogin={this.props.successfulLogin}/>
         }
