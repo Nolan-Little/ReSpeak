@@ -1,41 +1,57 @@
 import React, { Component } from 'react'
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import { Row, Col, Container, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 
 
 export default class Dashboard extends Component {
 
-  selectCollection = (selected) => {
-    this.setState({currentCollection:selected})
+  constructor(){
+    super()
+    this.state ={
+      currentCollection: null
+    }
   }
+
+
+
+
   render() {
     return (
       <React.Fragment>
         <h1 className="text-center">Im a dashboard</h1>
-        <SideNav
-          onSelect={(selected) => {
-            console.log(selected)
-            this.selectCollection(selected)
-          }}
-        >
-          <SideNav.Toggle />
-          <SideNav.Nav>
-            {
-              this.props.collections.map((col) => {
-                return (
-                  <NavItem key={col.id} eventKey={col.title}>
-                  <NavIcon>
-                    <i className="fa fa-fw" style={{ fontSize: '1.75em' }} />
-                  </NavIcon>
-                  <NavText>
-                    {col.title}
-                  </NavText>
-                </NavItem>
-                )
-              })
-
-            }
-          </SideNav.Nav>
-        </SideNav>
+        <Container className="m-5">
+        <h1 className="text-center">Collection Title</h1>
+          <Row>
+            <Col xs="3">
+                {
+                  this.props.collections.map((col) => {
+                    return <ListGroupItem id={col.title} key={col.id}>{col.title}</ListGroupItem>
+                  })
+                }
+            </Col>
+            <Col xs="9">
+              <ListGroup>
+                <ListGroupItem active>
+                  <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
+                  <ListGroupItemText>
+                    Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+                  </ListGroupItemText>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
+                  <ListGroupItemText>
+                    Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+                  </ListGroupItemText>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <ListGroupItemHeading>List group item heading</ListGroupItemHeading>
+                  <ListGroupItemText>
+                    Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+                  </ListGroupItemText>
+                </ListGroupItem>
+              </ListGroup>
+            </Col>
+          </Row>
+        </Container>
       </React.Fragment>
     )
   }
