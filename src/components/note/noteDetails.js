@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import moment from 'moment'
 
 export default class NoteDetails extends Component {
 
@@ -9,6 +10,19 @@ export default class NoteDetails extends Component {
     this.setState(stateToChange)
   }
 
+  saveEdit = (id) => {
+    let newTimeStamp = moment(new Date()).format('lll')
+    let newNote = {
+      title: this.state.title,
+      textContent: this.state.textContent,
+      timestamp: newTimeStamp,
+      collectionId: this.props.currentCollection,
+      isPinned: false,
+      reminder: false
+    }
+    this.props.editNote(newNote, id)
+    this.props.toggleEditing()
+  }
 
   render() {
     return (
@@ -16,23 +30,23 @@ export default class NoteDetails extends Component {
       this.props.editing
 
         ?
-            // ALLOW EDITING
+        // ALLOW EDITING
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
-            <Input id="title" type="text" defaultValue={this.props.note.title}></Input>
+            <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
           </ModalHeader>
           <ModalBody>
-            <Input id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
+            <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
           </ModalBody>
           <ModalFooter>
             <audio controls></audio>
-            <Button color="primary" onClick={() => this.props.toggleEditing()}>Save Changes</Button>{' '}
+            <Button color="primary" onClick={() => this.saveEdit(this.props.note.id)}>Save Changes</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggleEditing()}>Cancel</Button>
           </ModalFooter>
         </Modal>
 
         :
-          // NOT EDITING
+        // NOT EDITING
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>{this.props.note.title}</ModalHeader>
           <ModalBody>
