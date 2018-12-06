@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Row, Col, Container, ListGroupItem } from 'reactstrap';
-import NoteGroup from './noteGroup'
+import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
 export default class Dashboard extends Component {

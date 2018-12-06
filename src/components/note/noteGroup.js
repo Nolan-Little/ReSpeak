@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { ListGroup, ListGroupItem, ListGroupItemHeading } from 'reactstrap'
+import { ListGroup } from 'reactstrap'
+import Note from './note'
 
 export default class NoteGroup extends Component {
   render() {
@@ -11,9 +12,7 @@ export default class NoteGroup extends Component {
             ?
             this.props.collections[0].notes.map((note) => {
               return (
-                <ListGroupItem key={note.id}>
-                  <ListGroupItemHeading>{note.title}</ListGroupItemHeading>
-                </ListGroupItem>
+                <Note note={note} />
               )
             })
 
@@ -25,11 +24,9 @@ export default class NoteGroup extends Component {
               return col.notes.map((note) => {
                 if (note.collectionId === this.props.currentCollection)
                   return (
-                    <ListGroupItem key={note.id}>
-                      <ListGroupItemHeading>{note.title}</ListGroupItemHeading>
-                    </ListGroupItem>
+                    <Note note={note} />
                   )
-                })
+              })
 
             })
 
