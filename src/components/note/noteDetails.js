@@ -7,7 +7,7 @@ export default class NoteDetails extends Component {
     super()
     this.state = {
       title: null,
-      textContent: null
+      textContent: null,
     }
   }
 

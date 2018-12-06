@@ -3,6 +3,7 @@ import { Button, Row, Col, Container, ListGroupItem } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
+import NewNoteForm from '../note/newNoteForm';
 export default class Dashboard extends Component {
 
   constructor() {
@@ -10,7 +11,8 @@ export default class Dashboard extends Component {
     this.state = {
       currentCollection: "initial",
       currentTitle: null,
-      collections: []
+      collections: [],
+      newNoteModal: false,
     }
   }
 
@@ -22,7 +24,12 @@ export default class Dashboard extends Component {
 
   editNote = (noteObj, id) => {
     return api.editData("notes", noteObj, id)
-      .then(()=> this.getUserData(userSession.getUser()))
+      .then(() => this.getUserData(userSession.getUser()))
+  }
+
+  newNote = (noteObj) => {
+    return api.saveData("notes", noteObj)
+      .then(() => this.getUserData(userSession.getUser()))
   }
 
   componentDidMount() {
@@ -43,9 +50,14 @@ export default class Dashboard extends Component {
   }
 
   setCurrentTitle = (title) => {
-      this.setState({ currentTitle: title })
+    this.setState({ currentTitle: title })
   }
 
+  toggleNoteForm = () => {
+    this.setState({
+      newNoteModal: !this.state.newNoteModal
+    })
+  }
 
 
 
@@ -58,7 +70,13 @@ export default class Dashboard extends Component {
         </Row>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
-          <Button className="m-1">New Note</Button>
+          <Button onClick={this.toggleNoteForm} className="m-1">New Note</Button>
+          <NewNoteForm
+            currentCollection={this.state.currentCollection}
+            collections={this.state.collections}
+            newNote={this.newNote}
+            toggle={this.toggleNoteForm}
+            modal={this.state.newNoteModal} />
           <Row>
             <Col xs="3">
               {/* create list of collection titles */}
@@ -72,7 +90,10 @@ export default class Dashboard extends Component {
               }
             </Col>
             <Col xs="9">
-              <NoteGroup editNote={this.editNote} currentCollection={this.state.currentCollection} collections={this.state.collections} />
+              <NoteGroup
+                editNote={this.editNote}
+                currentCollection={this.state.currentCollection}
+                collections={this.state.collections} />
             </Col>
           </Row>
         </Container>
