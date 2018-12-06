@@ -32,6 +32,11 @@ export default class Dashboard extends Component {
       .then(() => this.getUserData(userSession.getUser()))
   }
 
+  deleteNote = (id) => {
+    return api.deleteData("notes", id)
+      .then(() => this.getUserData(userSession.getUser()))
+  }
+
   componentDidMount() {
     this.getUserData(userSession.getUser())
       .then(() => this.setInitialTitle())
@@ -91,6 +96,7 @@ export default class Dashboard extends Component {
             </Col>
             <Col xs="9">
               <NoteGroup
+                deleteNote={this.deleteNote}
                 editNote={this.editNote}
                 currentCollection={this.state.currentCollection}
                 collections={this.state.collections} />

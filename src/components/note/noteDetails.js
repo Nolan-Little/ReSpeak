@@ -72,7 +72,7 @@ export default class NoteDetails extends Component {
                 textContent: this.props.note.textContent
               })
             }}>Edit</Button>{' '}
-            <Button color="primary">Delete</Button>{' '}
+            <Button color="primary" onClick={() => this.props.deleteNote(this.props.note.id)}>Delete</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggle()}>Save</Button>
           </ModalFooter>
         </Modal>
