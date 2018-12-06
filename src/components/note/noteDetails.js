@@ -10,8 +10,10 @@ export default class NoteDetails extends Component {
         {this.props.note.textContent}
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={()=>this.props.toggle()}>Do Something</Button>{' '}
-        <Button color="secondary" onClick={()=>this.props.toggle()}>Cancel</Button>
+        <audio controls></audio>
+        <Button color="primary">Edit</Button>{' '}
+        <Button color="primary">Delete</Button>{' '}
+        <Button color="secondary" onClick={()=>this.props.toggle()}>Save</Button>
       </ModalFooter>
     </Modal>
     )

@@ -25,8 +25,6 @@ export default class Note extends Component {
         <ListGroupItem key={this.props.note.id}>
           <ListGroupItemHeading>{this.props.note.title}</ListGroupItemHeading>
           <Button onClick={() => this.toggle()} className="m-1" color="primary">View Details</Button>
-          <Button className="m-1" color="primary">Edit</Button>
-          <Button className="m-1" color="primary">Delete</Button>
         </ListGroupItem>
         <NoteDetails note={this.props.note} modal={this.state.modal} toggle={this.toggle}/>
       </React.Fragment>
