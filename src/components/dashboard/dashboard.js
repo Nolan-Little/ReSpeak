@@ -52,8 +52,10 @@ export default class Dashboard extends Component {
         </Row>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
+          <Button className="m-1">New Note</Button>
           <Row>
             <Col xs="3">
+              {/* create list of collection titles */}
               {
                 this.state.collections.map((col) => {
                   return <ListGroupItem onClick={() => {
