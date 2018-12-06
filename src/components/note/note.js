@@ -8,14 +8,20 @@ export default class Note extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      modal: false
+      modal: false,
+      editing: false
     }
   }
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      editing: false
     })
+  }
+
+  toggleEditing = () => {
+    this.setState({ editing: !this.state.editing })
   }
 
 
@@ -26,7 +32,14 @@ export default class Note extends Component {
           <ListGroupItemHeading>{this.props.note.title}</ListGroupItemHeading>
           <Button onClick={() => this.toggle()} className="m-1" color="primary">View Details</Button>
         </ListGroupItem>
-        <NoteDetails note={this.props.note} modal={this.state.modal} toggle={this.toggle}/>
+        <NoteDetails
+          currentCollection={this.props.currentCollection}
+          editNote={this.props.editNote}
+          editing={this.state.editing}
+          toggleEditing={this.toggleEditing}
+          note={this.props.note}
+          modal={this.state.modal}
+          toggle={this.toggle} />
       </React.Fragment>
     )
   }

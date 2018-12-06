@@ -14,9 +14,15 @@ export default class Dashboard extends Component {
     }
   }
 
+  // API INTERACTIONS
   getUserData = (user) => {
     return api.getData(`collections?userId=${user}&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
+  }
+
+  editNote = (noteObj, id) => {
+    return api.editData("notes", noteObj, id)
+      .then(()=> this.getUserData(userSession.getUser()))
   }
 
   componentDidMount() {
@@ -66,7 +72,7 @@ export default class Dashboard extends Component {
               }
             </Col>
             <Col xs="9">
-              <NoteGroup currentCollection={this.state.currentCollection} collections={this.state.collections} />
+              <NoteGroup editNote={this.editNote} currentCollection={this.state.currentCollection} collections={this.state.collections} />
             </Col>
           </Row>
         </Container>
