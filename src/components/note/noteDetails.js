@@ -3,6 +3,13 @@ import { Input, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'react
 import moment from 'moment'
 
 export default class NoteDetails extends Component {
+  constructor() {
+    super()
+    this.state = {
+      title: null,
+      textContent: null,
+    }
+  }
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
@@ -12,6 +19,8 @@ export default class NoteDetails extends Component {
 
   saveEdit = (id) => {
     let newTimeStamp = moment(new Date()).format('lll')
+
+
     let newNote = {
       title: this.state.title,
       textContent: this.state.textContent,
@@ -20,8 +29,10 @@ export default class NoteDetails extends Component {
       isPinned: false,
       reminder: false
     }
-    this.props.editNote(newNote, id)
-    this.props.toggleEditing()
+    if (newNote.title !== null && newNote.textContent !== null && newNote.collectionId !== null) {
+      this.props.editNote(newNote, id)
+      this.props.toggleEditing()
+    }
   }
 
   render() {
@@ -54,8 +65,14 @@ export default class NoteDetails extends Component {
           </ModalBody>
           <ModalFooter>
             <audio controls></audio>
-            <Button color="primary" onClick={() => this.props.toggleEditing()}>Edit</Button>{' '}
-            <Button color="primary">Delete</Button>{' '}
+            <Button color="primary" onClick={() => {
+              this.props.toggleEditing()
+              this.setState({
+                title: this.props.note.title,
+                textContent: this.props.note.textContent
+              })
+            }}>Edit</Button>{' '}
+            <Button color="primary" onClick={() => this.props.deleteNote(this.props.note.id)}>Delete</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggle()}>Save</Button>
           </ModalFooter>
         </Modal>

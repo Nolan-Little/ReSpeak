@@ -33,6 +33,7 @@ export default class Note extends Component {
           <Button onClick={() => this.toggle()} className="m-1" color="primary">View Details</Button>
         </ListGroupItem>
         <NoteDetails
+          deleteNote={this.props.deleteNote}
           currentCollection={this.props.currentCollection}
           editNote={this.props.editNote}
           editing={this.state.editing}

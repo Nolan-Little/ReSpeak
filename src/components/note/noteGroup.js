@@ -12,7 +12,12 @@ export default class NoteGroup extends Component {
             ?
             this.props.collections[0].notes.map((note) => {
               return (
-                <Note editNote={this.props.editNote} currentCollection={this.props.collections[0].id} key={note.id} note={note} />
+                <Note
+                  deleteNote={this.props.deleteNote}
+                  editNote={this.props.editNote}
+                  currentCollection={this.props.collections[0].id}
+                  key={note.id}
+                  note={note} />
               )
             })
 
@@ -24,7 +29,12 @@ export default class NoteGroup extends Component {
               return col.notes.map((note) => {
                 if (note.collectionId === this.props.currentCollection)
                   return (
-                    <Note currentCollection={col.id} key={note.id} editNote={this.props.editNote} note={note} />
+                    <Note
+                      deleteNote={this.props.deleteNote}
+                      currentCollection={col.id}
+                      key={note.id}
+                      editNote={this.props.editNote}
+                      note={note} />
                   )
               })
 
