@@ -26,7 +26,7 @@ export default class Dashboard extends Component {
 
   // API INTERACTIONS
   getUserData = (user) => {
-    return api.getData(`collections?userId=${user}&_embed=notes`)
+    return api.getData(`collections?userId=${user}&deleted=false&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
   }
 

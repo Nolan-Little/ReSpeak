@@ -20,7 +20,8 @@ export default class NewCollectionForm extends Component {
     e.preventDefault()
     let colObj = {
       title: this.state.title,
-      userId: userSession.getUser()
+      userId: userSession.getUser(),
+      deleted: false
     }
     this.props.newCollection(colObj)
     this.setState({
