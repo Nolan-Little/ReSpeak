@@ -75,7 +75,8 @@ export default class Dashboard extends Component {
         </Row>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
-          <Button onClick={this.toggleNoteForm} className="m-1">New Note</Button>
+          <Button className="m-1">New Collection</Button>
+          <Button onClick={this.toggleNoteForm} className="ml-5">New Note</Button>
           <NewNoteForm
             currentCollection={this.state.currentCollection}
             collections={this.state.collections}
