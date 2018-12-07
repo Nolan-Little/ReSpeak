@@ -14,6 +14,12 @@ export default class NoteDetails extends Component {
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
+  handleCollectionChange = (evt) => {
+    const stateToChange = {}
     stateToChange[evt.target.id] = parseInt(evt.target.value)
     this.setState(stateToChange)
   }
@@ -51,7 +57,7 @@ export default class NoteDetails extends Component {
                   <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
                 </Row>
                 <Row>
-                  <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e)=> this.handleFieldChange(e)}type="select">
+                  <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e)=> this.handleCollectionChange(e)}type="select">
                     {
                       this.props.collections.map((col) => {
                           return <option value={col.id} key={col.id}>{col.title}</option>
@@ -78,7 +84,7 @@ export default class NoteDetails extends Component {
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
             <Row>
-              <Col xs="auto">
+              <Col xs={{ size: 'auto', offset: 1 }}>
                 <Row>
                   {this.props.note.title}
                 </Row>
