@@ -3,7 +3,8 @@ import { Button, Row, Col, Container, ListGroupItem } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
-import NewNoteForm from '../note/newNoteForm';
+import NewNoteForm from '../note/newNoteForm'
+import NewCollectionForm from './../collection/newCollection'
 export default class Dashboard extends Component {
 
   constructor() {
@@ -13,7 +14,14 @@ export default class Dashboard extends Component {
       currentTitle: null,
       collections: [],
       newNoteModal: false,
+      newColModal: false
     }
+  }
+
+  componentDidMount() {
+    this.getUserData(userSession.getUser())
+      .then(() => this.setInitialTitle())
+
   }
 
   // API INTERACTIONS
@@ -37,13 +45,13 @@ export default class Dashboard extends Component {
       .then(() => this.getUserData(userSession.getUser()))
   }
 
-  componentDidMount() {
-    this.getUserData(userSession.getUser())
-      .then(() => this.setInitialTitle())
-
+  newCollection = (colObj) => {
+    return api.saveData("collections", colObj)
+      .then(() => this.getUserData(userSession.getUser()))
   }
 
 
+  // COLLECTION STATE
   selectCollection = (id) => {
     this.setState({ currentCollection: id })
   }
@@ -58,9 +66,17 @@ export default class Dashboard extends Component {
     this.setState({ currentTitle: title })
   }
 
+
+  // FORM MODALS
   toggleNoteForm = () => {
     this.setState({
       newNoteModal: !this.state.newNoteModal
+    })
+  }
+
+  toggleCollectionForm = () => {
+    this.setState({
+      newColModal: !this.state.newColModal
     })
   }
 
@@ -75,8 +91,12 @@ export default class Dashboard extends Component {
         </Row>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
-          <Button className="m-1">New Collection</Button>
+          <Button onClick={this.toggleCollectionForm} className="m-1">New Collection</Button>
           <Button onClick={this.toggleNoteForm} className="ml-5">New Note</Button>
+          <NewCollectionForm
+            newCollection={this.newCollection}
+            toggle={this.toggleCollectionForm}
+            modal={this.state.newColModal} />
           <NewNoteForm
             currentCollection={this.state.currentCollection}
             collections={this.state.collections}
