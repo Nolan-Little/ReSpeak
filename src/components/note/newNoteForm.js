@@ -46,6 +46,14 @@ export default class NewNoteForm extends Component {
     this.props.toggle()
   }
 
+  resetForm(){
+    this.setState({
+      title: "New Note",
+      textContent: "Empty Note"
+    })
+    this.props.toggle()
+  }
+
   render() {
     return (
       <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
@@ -67,7 +75,7 @@ export default class NewNoteForm extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary">Save</Button>{' '}
-            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            <Button color="secondary" onClick={() => this.resetForm()}>Cancel</Button>
           </ModalFooter>
         </Form>
       </Modal>

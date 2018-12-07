@@ -13,6 +13,7 @@ export default class NoteGroup extends Component {
             this.props.collections[0].notes.map((note) => {
               return (
                 <Note
+                  collections={this.props.collections}
                   deleteNote={this.props.deleteNote}
                   editNote={this.props.editNote}
                   currentCollection={this.props.collections[0].id}
@@ -30,6 +31,7 @@ export default class NoteGroup extends Component {
                 if (note.collectionId === this.props.currentCollection)
                   return (
                     <Note
+                      collections={this.props.collections}
                       deleteNote={this.props.deleteNote}
                       currentCollection={col.id}
                       key={note.id}
