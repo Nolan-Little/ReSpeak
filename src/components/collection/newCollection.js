@@ -42,7 +42,7 @@ export default class NewCollectionForm extends Component {
       <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleColFormSubmit(e)}>
           <ModalHeader toggle={this.props.toggle}>
-            <Input onChange={this.handleFieldChange} id="title" type="text" required defaultValue={"My Collection"}></Input>
+            <Input autoFocus onChange={this.handleFieldChange} id="title" type="text" required defaultValue={"My Collection"}></Input>
           </ModalHeader>
           <ModalFooter>
             <Button color="primary">Create Collection</Button>{' '}

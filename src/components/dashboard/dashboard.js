@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, Container, ListGroupItem } from 'reactstrap';
+import { Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
@@ -14,7 +14,10 @@ export default class Dashboard extends Component {
       currentTitle: null,
       collections: [],
       newNoteModal: false,
-      newColModal: false
+      newColModal: false,
+      editingColName: false,
+      editTarget: null,
+      editedTitle: null
     }
   }
 
@@ -59,6 +62,27 @@ export default class Dashboard extends Component {
       })
   }
 
+  editColTitle = (id) => {
+    let newTitle = {
+      title: this.state.editedTitle
+    }
+    return api.editData("collections", newTitle, id )
+    .then(() => this.getUserData(userSession.getUser()))
+    .then(()=> {
+      this.setState({
+        editingColName: false,
+        editTarget: null,
+        editedTitle: null
+      })
+    })
+
+  }
+
+  handleFieldChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
 
   // COLLECTION STATE
   selectCollection = (id) => {
@@ -88,6 +112,15 @@ export default class Dashboard extends Component {
       newColModal: !this.state.newColModal
     })
   }
+
+  toggleEditColTitle = (id, defVal) => {
+    this.setState({
+      editingColName: !this.state.editingColName,
+      editTarget: id,
+      editedTitle: defVal
+    })
+  }
+
 
 
 
@@ -123,13 +156,33 @@ export default class Dashboard extends Component {
                       this.setCurrentTitle(col.title)
                     }}
                     key={col.id}>
-                    <Col xs="auto">
-                      {col.title}
-                    </Col>
-                    <Col xs="2">
-                      <Button className="m-1">Edit</Button>
-                      <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
-                    </Col>
+
+                    {
+                      this.state.editingColName && this.state.editTarget === col.id
+                        ?
+                        // EDITNG COLLECTION TITLE
+                        <React.Fragment>
+                          <Col xs="auto">
+                            <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
+                          </Col>
+                          <Col xs="2">
+                            <Button onClick={()=> this.editColTitle(col.id)}className="m-1">Save</Button>
+                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                          </Col>
+                        </React.Fragment>
+                        :
+                        // NOT EDITING
+                        <React.Fragment>
+                          <Col xs="auto">
+                            {col.title}
+                          </Col>
+                          <Col xs="2">
+                            <Button className="m-1" onClick={()=>this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                          </Col>
+                        </React.Fragment>
+                    }
+
                   </ListGroupItem>
                 })
               }
