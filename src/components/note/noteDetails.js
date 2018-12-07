@@ -8,12 +8,13 @@ export default class NoteDetails extends Component {
     this.state = {
       title: null,
       textContent: null,
+      collectionId: null
     }
   }
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
-    stateToChange[evt.target.id] = evt.target.value
+    stateToChange[evt.target.id] = parseInt(evt.target.value)
     this.setState(stateToChange)
   }
 
@@ -25,7 +26,7 @@ export default class NoteDetails extends Component {
       title: this.state.title,
       textContent: this.state.textContent,
       timestamp: newTimeStamp,
-      collectionId: this.props.currentCollection,
+      collectionId: this.state.collectionId,
       isPinned: false,
       reminder: false
     }
@@ -45,15 +46,15 @@ export default class NoteDetails extends Component {
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
             <Row>
-              <Col xs="auto">
+              <Col xs={{ size: 'auto', offset: 1 }}>
                 <Row>
                   <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
                 </Row>
                 <Row>
-                  <Input type="select">
+                  <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e)=> this.handleFieldChange(e)}type="select">
                     {
                       this.props.collections.map((col) => {
-                          return <option key={col.id}>{col.title}</option>
+                          return <option value={col.id} key={col.id}>{col.title}</option>
                       })
                     }
 
@@ -102,7 +103,8 @@ export default class NoteDetails extends Component {
               this.props.toggleEditing()
               this.setState({
                 title: this.props.note.title,
-                textContent: this.props.note.textContent
+                textContent: this.props.note.textContent,
+                collectionId: this.props.note.collectionId
               })
             }}>Edit</Button>{' '}
             <Button color="primary" onClick={() => this.props.deleteNote(this.props.note.id)}>Delete</Button>{' '}
