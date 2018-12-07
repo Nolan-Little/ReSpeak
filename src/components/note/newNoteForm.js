@@ -59,7 +59,7 @@ export default class NewNoteForm extends Component {
       <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
           <ModalHeader toggle={this.props.toggle}>
-            <Input onChange={this.handleFieldChange} id="title" type="text" required defaultValue={"New Note"}></Input>
+            <Input onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
           </ModalHeader>
           <ModalBody>
             <Container>
