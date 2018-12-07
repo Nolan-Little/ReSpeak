@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Jumbotron, Button } from 'reactstrap'
 import LoginModal from './login'
 import RegisterModal from './register'
-import validate from '../../modules/validateUser';
+import validate from '../../modules/validateUser'
+import api from './../../modules/apiManager'
 
 export default class Landing extends Component {
 
@@ -41,8 +42,8 @@ export default class Landing extends Component {
       .then((res) => {
         if (res) {
           this.props.successfulLogin()
-        } else if (res === false){
-          this.setState({unsuccesfulLogin:true})
+        } else if (res === false) {
+          this.setState({ unsuccesfulLogin: true })
         }
       })
   }
@@ -56,11 +57,19 @@ export default class Landing extends Component {
 
     validate.newUser(obj)
       .then((res) => {
-        if (res) {
-          this.props.successfulLogin()
-        } else if (res === false){
-          this.setState({unsuccesfulRegister:true})
-        }
+        api.getData(`users?email=${this.state.RegisterEmail}`)
+          .then((users) => {
+            if (res) {
+             return  api.saveData("collections", { title: "My Collection", userId: users[0].id })
+            }
+          })
+          .then(() => {
+              if (res) {
+                this.props.successfulLogin()
+              } else if (res === false) {
+                this.setState({ unsuccesfulRegister: true })
+              }
+            })
       })
   }
 
