@@ -128,7 +128,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <TEST/> TODO: */}
+        {/* <TEST/> TODO */}
         <Row>
           <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
           <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>
