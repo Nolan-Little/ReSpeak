@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import { Input, Modal, ModalBody, ModalHeader, ModalFooter, Button, Row, Col } from 'reactstrap'
 import moment from 'moment'
 
 export default class NoteDetails extends Component {
@@ -44,7 +44,23 @@ export default class NoteDetails extends Component {
         // ALLOW EDITING
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
-            <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
+            <Row>
+              <Col xs="auto">
+                <Row>
+                  <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
+                </Row>
+                <Row>
+                  <Input type="select">
+                    {
+                      this.props.collections.map((col) => {
+                          return <option key={col.id}>{col.title}</option>
+                      })
+                    }
+
+                  </Input>
+                </Row>
+              </Col>
+            </Row>
           </ModalHeader>
           <ModalBody>
             <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
@@ -59,7 +75,24 @@ export default class NoteDetails extends Component {
         :
         // NOT EDITING
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.props.toggle}>{this.props.note.title}</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>
+            <Row>
+              <Col xs="auto">
+                <Row>
+                  {this.props.note.title}
+                </Row>
+                <Row>
+                  {
+                    this.props.collections.map((col) => {
+                      if (col.id === this.props.currentCollection) {
+                        return col.title
+                      }
+                    })
+                  }
+                </Row>
+              </Col>
+            </Row>
+          </ModalHeader>
           <ModalBody>
             {this.props.note.textContent}
           </ModalBody>
