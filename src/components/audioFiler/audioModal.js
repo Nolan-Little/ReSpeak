@@ -51,7 +51,7 @@ export default class AudioModal extends Component {
       let audioURL = window.URL.createObjectURL(blob);
       this.setState({ audioURL: audioURL })
       console.log(blob)
-      this.setState({ filepath: this.props.firebase.audioStorage.child(`audio${toString(this.props.audioName)}.ogg`) })
+      this.setState({ filepath: this.props.firebase.audioStorage.child(`audio${this.props.audioName}.ogg`) })
       this.state.filepath.put(blob).then(function (snapshot) {
         console.log('Uploaded a blob or file!', snapshot);
       })

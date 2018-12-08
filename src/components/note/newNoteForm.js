@@ -58,12 +58,29 @@ export default class NewNoteForm extends Component {
     this.props.toggle()
   }
 
-  toggleAudioModal = () => {
+  createUniqueName = () => {
+
+    // attempt to create a unique filepath name for audio file by concatonating collection id with the highest id
+    // note in that collection plus 1
+    let collectionId = null
+    if (this.props.currentCollection === "initial") {
+      collectionId = this.props.collections[0].id
+    } else {
+      collectionId = this.props.currentCollection
+    }
     this.props.collections.map((col) => {
-      if (col.id === this.props.currentCollection) {
-        this.setState({ audioName: (col.notes.length + 1) })
+      if (col.id === collectionId) {
+        let id
+        for (let i = 0; i < col.notes.length; i++){
+           id = col.notes[i].id
+        }
+        this.setState({ audioName: collectionId.toString() + (id + 1).toString() })
       }
     })
+  }
+
+  toggleAudioModal = () => {
+    this.createUniqueName()
     this.setState({ audioModal: !this.state.audioModal })
   }
 
