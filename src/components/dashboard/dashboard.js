@@ -73,7 +73,8 @@ export default class Dashboard extends Component {
       this.setState({
         editingColName: false,
         editTarget: null,
-        editedTitle: null
+        editedTitle: null,
+        currentTitle: this.state.editedTitle
       })
     })
 
