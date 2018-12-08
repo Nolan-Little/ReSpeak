@@ -59,6 +59,11 @@ export default class NewNoteForm extends Component {
   }
 
   toggleAudioModal = () => {
+    this.props.collections.map((col) => {
+      if (col.id === this.props.currentCollection) {
+        this.setState({ audioName: (col.notes.length + 1) })
+      }
+    })
     this.setState({ audioModal: !this.state.audioModal })
   }
 
@@ -79,10 +84,14 @@ export default class NewNoteForm extends Component {
                   <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
                   <FirebaseContext.Consumer>
                     {
-                     firebase => {
-                       console.log(firebase)
-                      return <AudioModal firebase={firebase} modal={this.state.audioModal} toggle={this.toggleAudioModal} />
-                     }
+                      firebase => {
+                        console.log(firebase)
+                        return <AudioModal
+                          audioName={this.state.audioName}
+                          firebase={firebase}
+                          modal={this.state.audioModal}
+                          toggle={this.toggleAudioModal} />
+                      }
                     }
                   </FirebaseContext.Consumer>
                 </Col>

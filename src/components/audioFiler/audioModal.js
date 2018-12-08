@@ -51,7 +51,7 @@ export default class AudioModal extends Component {
       let audioURL = window.URL.createObjectURL(blob);
       this.setState({ audioURL: audioURL })
       console.log(blob)
-      this.setState({ filepath: this.state.firebase.child("audio.ogg") })
+      this.setState({ filepath: this.props.firebase.audioStorage.child(`audio${toString(this.props.audioName)}.ogg`) })
       this.state.filepath.put(blob).then(function (snapshot) {
         console.log('Uploaded a blob or file!', snapshot);
       })
@@ -79,19 +79,24 @@ export default class AudioModal extends Component {
     }
   }
 
+  toggleStopRecording = () => {
+    this.stopMicrophone()
+    this.props.toggle()
+  }
+
 
   render() {
+    if(this.props.modal && !this.state.audio){
+      this.getMicrophone()
+    }
     return (
-      <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.props.toggle}>
+      <Modal isOpen={this.props.modal} toggle={this.toggleStopRecording} className={this.props.className}>
+          <ModalHeader toggle={this.toggleStopRecording}>
           </ModalHeader>
           <ModalBody>
             <div className="App">
               <main>
                 <div className="controls">
-                  <button onClick={() => this.toggleMicrophone()}>
-                    {this.state.audio ? 'Stop microphone' : 'Get microphone input'}
-                  </button>
                   <button onClick={() => this.toggleRecording()}>
                     {this.state.recording ? 'Stop' : 'Start Recording'}
                   </button>
@@ -102,7 +107,10 @@ export default class AudioModal extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={() => console.log(this.props.firebase)}>Save</Button>{' '}
-            <Button color="secondary" onClick={() => this.props.toggle()}>Cancel</Button>
+            <Button color="secondary" onClick={() => {
+              this.stopMicrophone()
+              this.props.toggle()
+            }}>Cancel</Button>
           </ModalFooter>
       </Modal>
     )
