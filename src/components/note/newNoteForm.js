@@ -7,6 +7,7 @@ import firebase from 'firebase'
 
 
 
+
 export default class NewNoteForm extends Component {
   constructor() {
     super()
@@ -23,6 +24,10 @@ export default class NewNoteForm extends Component {
     this.setState(stateToChange)
   }
 
+  saveDownloadURL = (url) => {
+    this.setState({downloadUrl: url})
+  }
+
   handleNoteFormSubmit = (e) => {
     e.preventDefault()
 
@@ -34,6 +39,7 @@ export default class NewNoteForm extends Component {
       collectionId = this.props.currentCollection
     }
 
+
     let newNote = {
       title: this.state.title,
       textContent: this.state.textContent,
@@ -42,7 +48,19 @@ export default class NewNoteForm extends Component {
       isPinned: false,
       reminder: false,
     }
+
+    let audioObj = {
+      name: "Audio Note",
+      url: this.state.downloadUrl
+    }
+
     this.props.newNote(newNote)
+      .then(() => this.props.getNoteId(newNote.timestamp))
+      .then((notes) => {
+        let noteId = notes[0].id
+        this.props.newAudio(audioObj, noteId)
+      })
+
     this.setState({
       title: "New Note",
       textContent: "Empty Note"
@@ -102,8 +120,8 @@ export default class NewNoteForm extends Component {
                   <FirebaseContext.Consumer>
                     {
                       firebase => {
-                        console.log(firebase)
                         return <AudioModal
+                          saveDownloadURL={this.saveDownloadURL}
                           audioName={this.state.audioName}
                           firebase={firebase}
                           modal={this.state.audioModal}

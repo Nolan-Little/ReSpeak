@@ -32,6 +32,13 @@ export default class Dashboard extends Component {
   getUserData = (user) => {
     return api.getData(`collections?userId=${user}&deleted=false&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
+      .then(() => this.getNoteAudio(1, this.state.collections))
+  }
+
+  getNoteAudio = (colId, collections) => {
+    let query = ""
+    // TODO:
+
   }
 
   editNote = (noteObj, id) => {
@@ -46,6 +53,18 @@ export default class Dashboard extends Component {
 
   deleteNote = (id) => {
     return api.deleteData("notes", id)
+      .then(() => this.getUserData(userSession.getUser()))
+  }
+
+  newAudio = (audioObj, noteId) => {
+    return api.saveData("audioFiles", audioObj)
+      .then((response) => {
+        let relObj = {
+          audioId: response.id,
+          noteId: noteId
+        }
+        api.saveData("audio_notes", relObj)
+      })
       .then(() => this.getUserData(userSession.getUser()))
   }
 
@@ -77,7 +96,10 @@ export default class Dashboard extends Component {
         currentTitle: this.state.editedTitle
       })
     })
+  }
 
+  getNoteId = (timestamp) => {
+     return api.getData(`notes?timestamp=${timestamp}`)
   }
 
   handleFieldChange = (evt) => {
@@ -143,8 +165,10 @@ export default class Dashboard extends Component {
             toggle={this.toggleCollectionForm}
             modal={this.state.newColModal} />
           <NewNoteForm
+            getNoteId={this.getNoteId}
             currentCollection={this.state.currentCollection}
             collections={this.state.collections}
+            newAudio={this.newAudio}
             newNote={this.newNote}
             toggle={this.toggleNoteForm}
             modal={this.state.newNoteModal} />

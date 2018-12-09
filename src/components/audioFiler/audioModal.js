@@ -46,17 +46,30 @@ export default class AudioModal extends Component {
       this.setState({ chunks: newDateArray })
     }
     r.onstop = (e) => {
-      let blob = new Blob(this.state.chunks, { 'type': 'audio/ogg; codecs=opus' });
+      let audioBlob = new Blob(this.state.chunks, { 'type': 'audio/ogg; codecs=opus' });
       this.setState({ chunks: [] })
-      let audioURL = window.URL.createObjectURL(blob);
+      let audioURL = window.URL.createObjectURL(audioBlob);
       this.setState({ audioURL: audioURL })
-      console.log(blob)
-      this.setState({ filepath: this.props.firebase.audioStorage.child(`audio${this.props.audioName}.ogg`) })
-      this.state.filepath.put(blob).then(function (snapshot) {
-        console.log('Uploaded a blob or file!', snapshot);
+      this.setState({
+        filepath: this.props.firebase.audioStorage.child(`audio${this.props.audioName}.ogg`),
+        audioBlob: audioBlob
       })
     }
     this.setState({ mRec: r })
+  }
+
+  // TODO: FIX atttempting to get reference to strage url to pass back up to newNoteForm via function
+  uploadBlob = () => {
+    this.state.filepath.put(this.state.audioBlob).then( (snapshot) => {
+      console.log('Uploaded a audioBlob or file!', snapshot)
+      return snapshot.ref.fullpath
+    }).then((ref)=> {
+      console.log(ref)
+      this.state.filepath.getDownloadURL()
+      .then((url) => this.props.saveDownloadURL(url))
+
+    })
+    this.toggleStopRecording()
   }
 
   startRecording = () => {
@@ -106,7 +119,7 @@ export default class AudioModal extends Component {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => console.log(this.props.firebase)}>Save</Button>{' '}
+            <Button color="primary" onClick={() => this.uploadBlob()}>Save</Button>{' '}
             <Button color="secondary" onClick={() => {
               this.stopMicrophone()
               this.props.toggle()
