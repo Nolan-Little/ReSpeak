@@ -5,8 +5,7 @@ import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
-import { appendFile } from 'fs';
-// import TEST from './testfirebase' TODO:
+
 export default class Dashboard extends Component {
 
   constructor() {
@@ -153,7 +152,6 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <TEST/> TODO */}
         <Row>
           <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
           <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>

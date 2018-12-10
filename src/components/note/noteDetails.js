@@ -44,7 +44,6 @@ export default class NoteDetails extends Component {
   }
 
   render() {
-    let url = ""
     if (this.props.modal) {
       this.props.getNoteAudio(this.props.note.id)
         .then((audio) => {
