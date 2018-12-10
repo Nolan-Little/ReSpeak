@@ -108,6 +108,8 @@ export default class Dashboard extends Component {
     this.setState(stateToChange)
   }
 
+
+
   // COLLECTION STATE
   selectCollection = (id) => {
     this.setState({ currentCollection: id })
@@ -122,6 +124,7 @@ export default class Dashboard extends Component {
   setCurrentTitle = (title) => {
     this.setState({ currentTitle: title })
   }
+
 
 
   // FORM MODALS

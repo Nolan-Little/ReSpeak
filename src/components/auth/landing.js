@@ -60,7 +60,7 @@ export default class Landing extends Component {
         api.getData(`users?email=${this.state.RegisterEmail}`)
           .then((users) => {
             if (res) {
-             return  api.saveData("collections", { title: "My Collection", userId: users[0].id })
+             return  api.saveData("collections", { title: "My Collection", userId: users[0].id, deleted: false })
             }
           })
           .then(() => {
