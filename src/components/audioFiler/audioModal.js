@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import firebase from 'firebase'
+import userSession from './../../modules/userSession'
 
 export default class AudioModal extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ export default class AudioModal extends Component {
       let audioURL = window.URL.createObjectURL(audioBlob);
       this.setState({ audioURL: audioURL })
       this.setState({
-        filepath: this.props.firebase.audioStorage.child(`audio${this.props.audioName}.ogg`),
+        filepath: this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${this.props.audioName}.ogg`),
         audioBlob: audioBlob
       })
     }

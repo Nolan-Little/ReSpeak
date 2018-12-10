@@ -25,7 +25,7 @@ export default class NewNoteForm extends Component {
   }
 
   saveDownloadURL = (url) => {
-    this.setState({downloadUrl: url})
+    this.setState({ downloadUrl: url })
   }
 
   handleNoteFormSubmit = (e) => {
@@ -78,23 +78,17 @@ export default class NewNoteForm extends Component {
 
   createUniqueName = () => {
 
-    // attempt to create a unique filepath name for audio file by concatonating collection id with the highest id
-    // note in that collection plus 1
+    // creates unique filepath by concatanating collection id and the new current time
+
     let collectionId = null
     if (this.props.currentCollection === "initial") {
       collectionId = this.props.collections[0].id
     } else {
       collectionId = this.props.currentCollection
     }
-    this.props.collections.map((col) => {
-      if (col.id === collectionId) {
-        let id
-        for (let i = 0; i < col.notes.length; i++){
-           id = col.notes[i].id
-        }
-        this.setState({ audioName: collectionId.toString() + (id + 1).toString() })
-      }
-    })
+
+    let time = Date.now()
+    this.setState({ audioName: collectionId.toString() + (time.toString()) })
   }
 
   toggleAudioModal = () => {
