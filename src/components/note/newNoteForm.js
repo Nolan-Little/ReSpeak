@@ -57,8 +57,12 @@ export default class NewNoteForm extends Component {
     this.props.newNote(newNote)
       .then(() => this.props.getNoteId(newNote.timestamp))
       .then((notes) => {
+        console.log(notes)
         let noteId = notes[0].id
-        this.props.newAudio(audioObj, noteId)
+        if (audioObj.url) {
+          this.props.newAudio(audioObj, noteId)
+          this.setState({downloadUrl: null})
+        }
       })
 
     this.setState({

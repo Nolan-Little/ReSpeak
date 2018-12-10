@@ -64,7 +64,7 @@ export default class AudioModal extends Component {
     this.state.filepath.put(this.state.audioBlob).then( (snapshot) => {
       console.log('Uploaded a audioBlob or file!', snapshot)
       return snapshot.ref.fullpath
-    }).then((ref)=> {
+    }).then(()=> {
       this.state.filepath.getDownloadURL()
       .then((url) => this.props.saveDownloadURL(url))
 
