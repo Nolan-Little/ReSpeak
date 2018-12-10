@@ -65,7 +65,6 @@ export default class AudioModal extends Component {
       console.log('Uploaded a audioBlob or file!', snapshot)
       return snapshot.ref.fullpath
     }).then((ref)=> {
-      console.log(ref)
       this.state.filepath.getDownloadURL()
       .then((url) => this.props.saveDownloadURL(url))
 
@@ -76,13 +75,11 @@ export default class AudioModal extends Component {
   startRecording = () => {
     this.state.mRec.start()
     this.setState({ recording: true })
-    console.log("start", this.state.mRec)
   }
 
   stopRecording = () => {
     this.state.mRec.stop()
     this.setState({ recording: false })
-    console.log("stop", this.state.mRec)
   }
 
   toggleRecording = () => {
