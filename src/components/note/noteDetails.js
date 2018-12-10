@@ -8,7 +8,8 @@ export default class NoteDetails extends Component {
     this.state = {
       title: null,
       textContent: null,
-      collectionId: null
+      collectionId: null,
+      url: null
     }
   }
 
@@ -43,6 +44,16 @@ export default class NoteDetails extends Component {
   }
 
   render() {
+    let url = ""
+    if (this.props.modal) {
+      this.props.getNoteAudio(this.props.note.id)
+        .then((audio) => {
+          if(audio.length === 1){
+           this.setState({url: audio[0].audio_files.url})
+          }
+        })
+    }
+
     return (
 
       this.props.editing
@@ -57,10 +68,10 @@ export default class NoteDetails extends Component {
                   <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
                 </Row>
                 <Row>
-                  <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e)=> this.handleCollectionChange(e)}type="select">
+                  <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">
                     {
                       this.props.collections.map((col) => {
-                          return <option value={col.id} key={col.id}>{col.title}</option>
+                        return <option value={col.id} key={col.id}>{col.title}</option>
                       })
                     }
 
@@ -73,7 +84,7 @@ export default class NoteDetails extends Component {
             <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
           </ModalBody>
           <ModalFooter>
-            <audio controls></audio>
+            <audio src={this.state.url} controls></audio>
             <Button color="primary" onClick={() => this.saveEdit(this.props.note.id)}>Save Changes</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggleEditing()}>Cancel</Button>
           </ModalFooter>
@@ -104,7 +115,7 @@ export default class NoteDetails extends Component {
             {this.props.note.textContent}
           </ModalBody>
           <ModalFooter>
-            <audio controls></audio>
+            <audio src={this.state.url} controls></audio>
             <Button color="primary" onClick={() => {
               this.props.toggleEditing()
               this.setState({

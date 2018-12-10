@@ -5,6 +5,8 @@ import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
+import { appendFile } from 'fs';
+// import TEST from './testfirebase' TODO:
 export default class Dashboard extends Component {
 
   constructor() {
@@ -31,6 +33,11 @@ export default class Dashboard extends Component {
   getUserData = (user) => {
     return api.getData(`collections?userId=${user}&deleted=false&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
+      .then(() => this.getNoteAudio(1, this.state.collections))
+  }
+
+  getNoteAudio = (noteId) => {
+    return api.getData(`audio_notes?noteId=${noteId}&_expand=audio_files`)
   }
 
   editNote = (noteObj, id) => {
@@ -45,6 +52,18 @@ export default class Dashboard extends Component {
 
   deleteNote = (id) => {
     return api.deleteData("notes", id)
+      .then(() => this.getUserData(userSession.getUser()))
+  }
+
+  newAudio = (audioObj, noteId) => {
+    return api.saveData("audio_files", audioObj)
+      .then((response) => {
+        let relObj = {
+          audio_filesId: response.id,
+          noteId: noteId
+        }
+        api.saveData("audio_notes", relObj)
+      })
       .then(() => this.getUserData(userSession.getUser()))
   }
 
@@ -72,10 +91,14 @@ export default class Dashboard extends Component {
       this.setState({
         editingColName: false,
         editTarget: null,
-        editedTitle: null
+        editedTitle: null,
+        currentTitle: this.state.editedTitle
       })
     })
+  }
 
+  getNoteId = (timestamp) => {
+     return api.getData(`notes?timestamp=${timestamp}`)
   }
 
   handleFieldChange = (evt) => {
@@ -83,6 +106,8 @@ export default class Dashboard extends Component {
     stateToChange[evt.target.id] = evt.target.value
     this.setState(stateToChange)
   }
+
+
 
   // COLLECTION STATE
   selectCollection = (id) => {
@@ -98,6 +123,7 @@ export default class Dashboard extends Component {
   setCurrentTitle = (title) => {
     this.setState({ currentTitle: title })
   }
+
 
 
   // FORM MODALS
@@ -127,6 +153,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
+        {/* <TEST/> TODO */}
         <Row>
           <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
           <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>
@@ -140,8 +167,10 @@ export default class Dashboard extends Component {
             toggle={this.toggleCollectionForm}
             modal={this.state.newColModal} />
           <NewNoteForm
+            getNoteId={this.getNoteId}
             currentCollection={this.state.currentCollection}
             collections={this.state.collections}
+            newAudio={this.newAudio}
             newNote={this.newNote}
             toggle={this.toggleNoteForm}
             modal={this.state.newNoteModal} />
@@ -189,6 +218,7 @@ export default class Dashboard extends Component {
             </Col>
             <Col xs="8">
               <NoteGroup
+                getNoteAudio={this.getNoteAudio}
                 deleteNote={this.deleteNote}
                 editNote={this.editNote}
                 currentCollection={this.state.currentCollection}
