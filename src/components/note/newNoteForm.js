@@ -3,7 +3,7 @@ import { Form, Input, Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, C
 import moment from 'moment'
 import AudioModal from './../audioFiler/audioModal'
 import { FirebaseContext } from './../firebase/firebaseindex'
-import firebase from 'firebase'
+import firebase from 'firebase/storage'
 
 
 
@@ -51,21 +51,29 @@ export default class NewNoteForm extends Component {
 
     let audioObj = {
       name: "Audio Note",
-      url: this.state.downloadUrl
+      url: this.state.downloadUrl,
+      ref: this.state.audioName
     }
 
     this.props.newNote(newNote)
       .then(() => this.props.getNoteId(newNote.timestamp))
       .then((notes) => {
+        // retrieve note id by checking against timestamp
         let noteId
         notes.forEach((note) => {
           if (note.timestamp === newNote.timestamp) {
             noteId = note.id
           }
         })
-        if (audioObj.url) {
+        if (audioObj.url !== null) {
+          // upload audio object and join table
           this.props.newAudio(audioObj, noteId)
-          this.setState({downloadUrl: null})
+
+          // reset state
+          this.setState({
+            downloadUrl: null,
+            audioName: null
+          })
         }
       })
 
@@ -96,7 +104,9 @@ export default class NewNoteForm extends Component {
     }
 
     let time = Date.now()
-    this.setState({ audioName: collectionId.toString() + (time.toString()) })
+    if (this.state.audioName === null){
+      this.setState({ audioName: collectionId.toString() + (time.toString()) })
+    }
   }
 
   toggleAudioModal = () => {
