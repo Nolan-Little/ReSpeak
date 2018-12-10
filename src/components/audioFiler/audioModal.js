@@ -42,9 +42,9 @@ export default class AudioModal extends Component {
   recorder = () => {
     let r = new MediaRecorder(this.state.audio)
     r.ondataavailable = (e) => {
-      let newDateArray = []
-      newDateArray.push(e.data)
-      this.setState({ chunks: newDateArray })
+      let newDataArray = []
+      newDataArray.push(e.data)
+      this.setState({ chunks: newDataArray })
     }
     r.onstop = (e) => {
       let audioBlob = new Blob(this.state.chunks, { 'type': 'audio/ogg; codecs=opus' });
@@ -64,7 +64,7 @@ export default class AudioModal extends Component {
     this.state.filepath.put(this.state.audioBlob).then( (snapshot) => {
       console.log('Uploaded a audioBlob or file!', snapshot)
       return snapshot.ref.fullpath
-    }).then(()=> {
+    }).then((ref)=> {
       this.state.filepath.getDownloadURL()
       .then((url) => this.props.saveDownloadURL(url))
 

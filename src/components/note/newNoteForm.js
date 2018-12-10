@@ -43,7 +43,7 @@ export default class NewNoteForm extends Component {
     let newNote = {
       title: this.state.title,
       textContent: this.state.textContent,
-      timestamp: moment(new Date()).format('lll'),
+      timestamp: Date.now(),
       collectionId: collectionId,
       isPinned: false,
       reminder: false,
@@ -57,8 +57,12 @@ export default class NewNoteForm extends Component {
     this.props.newNote(newNote)
       .then(() => this.props.getNoteId(newNote.timestamp))
       .then((notes) => {
-        console.log(notes)
-        let noteId = notes[0].id
+        let noteId
+        notes.forEach((note) => {
+          if (note.timestamp === newNote.timestamp) {
+            noteId = note.id
+          }
+        })
         if (audioObj.url) {
           this.props.newAudio(audioObj, noteId)
           this.setState({downloadUrl: null})
