@@ -14,13 +14,21 @@ export default class NewNoteForm extends Component {
     this.state = {
       title: "New Note",
       textContent: "Empty Note",
-      audioModal: false
+      audioModal: false,
+      collectionId: null,
+      downloadUrl: null
     }
   }
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
     stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
+  handleCollectionChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = parseInt(evt.target.value)
     this.setState(stateToChange)
   }
 
@@ -35,6 +43,8 @@ export default class NewNoteForm extends Component {
     let collectionId = null
     if (this.props.currentCollection === "initial") {
       collectionId = this.props.collections[0].id
+    } else if (this.state.collectionId !== null) {
+      collectionId = this.state.collectionId
     } else {
       collectionId = this.props.currentCollection
     }
@@ -104,7 +114,7 @@ export default class NewNoteForm extends Component {
     }
 
     let time = Date.now()
-    if (this.state.audioName === null){
+    if (this.state.audioName === null) {
       this.setState({ audioName: collectionId.toString() + (time.toString()) })
     }
   }
@@ -120,6 +130,14 @@ export default class NewNoteForm extends Component {
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
           <ModalHeader toggle={this.props.toggle}>
             <Input onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
+            <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">
+              {
+                this.props.collections.map((col) => {
+                  return <option value={col.id} key={col.id}>{col.title}</option>
+                })
+              }
+
+            </Input>
           </ModalHeader>
           <ModalBody>
             <Container>
