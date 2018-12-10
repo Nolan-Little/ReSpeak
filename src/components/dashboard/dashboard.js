@@ -5,6 +5,7 @@ import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
+import { appendFile } from 'fs';
 // import TEST from './testfirebase' TODO:
 export default class Dashboard extends Component {
 
@@ -35,10 +36,8 @@ export default class Dashboard extends Component {
       .then(() => this.getNoteAudio(1, this.state.collections))
   }
 
-  getNoteAudio = (colId, collections) => {
-    let query = ""
-    // TODO:
-
+  getNoteAudio = (noteId) => {
+    return api.getData(`audio_notes?noteId=${noteId}&_expand=audio_files`)
   }
 
   editNote = (noteObj, id) => {
@@ -57,10 +56,10 @@ export default class Dashboard extends Component {
   }
 
   newAudio = (audioObj, noteId) => {
-    return api.saveData("audioFiles", audioObj)
+    return api.saveData("audio_files", audioObj)
       .then((response) => {
         let relObj = {
-          audioId: response.id,
+          audio_filesId: response.id,
           noteId: noteId
         }
         api.saveData("audio_notes", relObj)
@@ -219,6 +218,7 @@ export default class Dashboard extends Component {
             </Col>
             <Col xs="8">
               <NoteGroup
+                getNoteAudio={this.getNoteAudio}
                 deleteNote={this.deleteNote}
                 editNote={this.editNote}
                 currentCollection={this.state.currentCollection}
