@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import {Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import firebase from 'firebase'
 import userSession from './../../modules/userSession'
 
@@ -59,17 +59,22 @@ export default class AudioModal extends Component {
     this.setState({ mRec: r })
   }
 
-  // TODO: FIX atttempting to get reference to strage url to pass back up to newNoteForm via function
+  // checks to see if there is a created filepath. i.e. there has been audio recorded and filepath set in state then
+  // uploads blob, else displays warning
   uploadBlob = () => {
-    this.state.filepath.put(this.state.audioBlob).then( (snapshot) => {
-      console.log('Uploaded a audioBlob or file!', snapshot)
-      return snapshot.ref.fullpath
-    }).then((ref)=> {
-      this.state.filepath.getDownloadURL()
-      .then((url) => this.props.saveDownloadURL(url))
+    if(this.state.filepath){
+      this.state.filepath.put(this.state.audioBlob).then( (snapshot) => {
+        console.log('Uploaded a audioBlob or file!', snapshot)
+        return snapshot.ref.fullpath
+      }).then((ref)=> {
+        this.state.filepath.getDownloadURL()
+        .then((url) => this.props.saveDownloadURL(url))
 
-    })
-    this.toggleStopRecording()
+      })
+      this.toggleStopRecording()
+    } else {
+      this.setState({noAudioErr: true})
+    }
   }
 
   startRecording = () => {
@@ -117,6 +122,13 @@ export default class AudioModal extends Component {
             </div>
           </ModalBody>
           <ModalFooter>
+            {
+              this.state.noAudioErr
+              ?
+              <Alert color="warning">No Audio Recorded</Alert>
+              :
+              null
+            }
             <Button color="primary" onClick={() => this.uploadBlob()}>Save</Button>{' '}
             <Button color="secondary" onClick={() => {
               this.stopMicrophone()
