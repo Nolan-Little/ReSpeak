@@ -52,7 +52,7 @@ export default class NewNoteForm extends Component {
     let audioObj = {
       name: "Audio Note",
       url: this.state.downloadUrl,
-      ref: this.state.audioName
+      ref: `audio${this.state.audioName}.ogg`
     }
 
     this.props.newNote(newNote)
