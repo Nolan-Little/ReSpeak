@@ -53,22 +53,26 @@ export default class Dashboard extends Component {
   }
 
   // deleteNote = (id) => {
-    // return api.deleteData("notes", id)
-    //   .then(() => this.getUserData(userSession.getUser()))
+  // return api.deleteData("notes", id)
+  //   .then(() => this.getUserData(userSession.getUser()))
   // }
 
   deleteNote = (id) => {
     return api.getData(`audio_notes?noteId=${id}`)
       .then((res) => {
-        return api.getData(`audio_files?id=${res[0].audio_filesId}`)
-          .then((res) => {
-            this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${res[0].ref}.ogg`)
-          }).then((res) => {
-            return api.deleteData(`audio_files`, res[0].audio_filesId)
-          })
+        if (res.length > 0) {
+          return api.getData(`audio_files?id=${res[0].audio_filesId}`)
+            .then((res) => {
+              let audioObj = res[0]
+              this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(audioObj.ref).delete()
+              return audioObj
+            }).then((audioObj) => {
+              return api.deleteData(`audio_files`, audioObj.id)
+            })
+        }
       }).then(() => {
         return api.deleteData("notes", id)
-        .then(() => this.getUserData(userSession.getUser()))
+          .then(() => this.getUserData(userSession.getUser()))
       })
   }
 
