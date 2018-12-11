@@ -30,18 +30,21 @@ export default class NoteGroup extends Component {
             this.props.collections.map((col) => {
 
               return col.notes.map((note) => {
-                if (note.collectionId === this.props.currentCollection)
+                if (note.collectionId === this.props.currentCollection) {
                   return (
                     <Note
-                      firebase={this.props.firebase}
-                      getNoteAudio={this.props.getNoteAudio}
-                      collections={this.props.collections}
-                      deleteNote={this.props.deleteNote}
-                      currentCollection={col.id}
-                      key={note.id}
-                      editNote={this.props.editNote}
-                      note={note} />
-                  )
+                    firebase={this.props.firebase}
+                    getNoteAudio={this.props.getNoteAudio}
+                    collections={this.props.collections}
+                    deleteNote={this.props.deleteNote}
+                    currentCollection={col.id}
+                    key={note.id}
+                    editNote={this.props.editNote}
+                    note={note} />
+                    )
+                  } else {
+                    return null
+                  }
               })
 
             })

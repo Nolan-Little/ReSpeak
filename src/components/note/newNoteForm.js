@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { Form, Input, Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Container, Row } from 'reactstrap'
-import moment from 'moment'
 import AudioModal from './../audioFiler/audioModal'
 import { FirebaseContext } from './../firebase/firebaseindex'
-import firebase from 'firebase'
+import 'firebase'
 import userSession from './../../modules/userSession'
 
 

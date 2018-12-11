@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
-import firebase from 'firebase'
+import 'firebase'
 import userSession from './../../modules/userSession'
-import { resolve } from 'path';
+
 
 export default class AudioModal extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class AudioModal extends Component {
 
 
   async getMicrophone() {
-    const audio = await navigator.mediaDevices.getUserMedia({
+   return await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false
     }).then((audio) => {

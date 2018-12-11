@@ -7,9 +7,7 @@ import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
 import DeleteConfirm from './../collection/deleteConfirm'
-
-import firebase from 'firebase'
-import { resolve } from 'url';
+import 'firebase'
 
 export default class Dashboard extends Component {
 

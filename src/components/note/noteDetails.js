@@ -108,6 +108,8 @@ export default class NoteDetails extends Component {
                     this.props.collections.map((col) => {
                       if (col.id === this.props.currentCollection) {
                         return col.title
+                      } else {
+                        return null
                       }
                     })
                   }
