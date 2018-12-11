@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
+import { Navbar, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
@@ -7,6 +7,7 @@ import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
 import firebase from 'firebase'
+import { resolve } from 'url';
 
 export default class Dashboard extends Component {
 
@@ -27,10 +28,16 @@ export default class Dashboard extends Component {
   componentDidMount() {
     this.getUserData(userSession.getUser())
       .then(() => this.setInitialTitle())
+      .then(() => this.getUserEmail())
 
   }
 
   // API INTERACTIONS
+  getUserEmail = () => {
+    return api.getData(`users?id=${userSession.getUser()}`)
+      .then((res) => this.setState({ userEmail: res[0].email }))
+  }
+
   getUserData = (user) => {
     return api.getData(`collections?userId=${user}&deleted=false&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
@@ -52,8 +59,22 @@ export default class Dashboard extends Component {
   }
 
   deleteNote = (id) => {
-    return api.deleteData("notes", id)
-      .then(() => this.getUserData(userSession.getUser()))
+    return api.getData(`audio_notes?noteId=${id}`)
+      .then((res) => {
+        if (res.length > 0) {
+          return api.getData(`audio_files?id=${res[0].audio_filesId}`)
+            .then((res) => {
+              let audioObj = res[0]
+              this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(audioObj.ref).delete()
+              return audioObj
+            }).then((audioObj) => {
+              return api.deleteData(`audio_files`, audioObj.id)
+            })
+        }
+      }).then(() => {
+        return api.deleteData("notes", id)
+          .then(() => this.getUserData(userSession.getUser()))
+      })
   }
 
   newAudio = (audioObj, noteId) => {
@@ -75,6 +96,14 @@ export default class Dashboard extends Component {
 
   deleteCollection = (id) => {
     return api.editData("collections", { deleted: true }, id)
+      .then(() => {
+        return api.getData(`notes?collectionId=${id}`)
+          .then((notes) => {
+            notes.forEach((note) => {
+              this.deleteNote(note.id)
+            })
+          })
+      })
       .then(() => this.getUserData(userSession.getUser()))
       .then(() => {
         this.setState({ currentCollection: "initial" })
@@ -154,10 +183,25 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row>
-          <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
-          <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>
-        </Row>
+        <Navbar color="light">
+          <NavbarBrand>ReSpeak</NavbarBrand>
+          <Nav className="ml-auto" navbar>
+            <Row>
+              <NavItem>
+                {
+                  this.state.userEmail
+                    ?
+                    <NavLink className="m-2">{this.state.userEmail}</NavLink>
+                    :
+                    null
+                }
+              </NavItem>
+              <NavItem>
+                <NavLink><Button className="m-1" onClick={() => this.props.successfulLogout()}>Logout</Button></NavLink>
+              </NavItem>
+            </Row>
+          </Nav>
+        </Navbar>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
           <Button onClick={this.toggleCollectionForm} className="m-1">New Collection</Button>
@@ -185,6 +229,7 @@ export default class Dashboard extends Component {
             <Col xs="4">
               {/* create list of collection titles */}
               {
+
                 this.state.collections.map((col) => {
                   return <ListGroupItem
                     onClick={() => {
@@ -202,8 +247,16 @@ export default class Dashboard extends Component {
                             <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                           </Col>
                           <Col xs="2">
-                            <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
-                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                            {
+                              this.state.collections.length === 1
+                                ?
+                                <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
+                                :
+                                <React.Fragment>
+                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                                  <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
+                                </React.Fragment>
+                            }
                           </Col>
                         </React.Fragment>
                         :
@@ -213,8 +266,16 @@ export default class Dashboard extends Component {
                             {col.title}
                           </Col>
                           <Col xs="2">
-                            <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
-                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                            {
+                              this.state.collections.length === 1
+                                ?
+                                <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                                :
+                                <React.Fragment>
+                                  <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                                </React.Fragment>
+                            }
                           </Col>
                         </React.Fragment>
                     }
@@ -224,12 +285,22 @@ export default class Dashboard extends Component {
               }
             </Col>
             <Col xs="8">
-              <NoteGroup
-                getNoteAudio={this.getNoteAudio}
-                deleteNote={this.deleteNote}
-                editNote={this.editNote}
-                currentCollection={this.state.currentCollection}
-                collections={this.state.collections} />
+
+
+              <FirebaseContext.Consumer>
+                {
+                  firebase => {
+                    return <NoteGroup
+                      firebase={firebase}
+                      getNoteAudio={this.getNoteAudio}
+                      deleteNote={this.deleteNote}
+                      editNote={this.editNote}
+                      currentCollection={this.state.currentCollection}
+                      collections={this.state.collections} />
+                  }
+                }
+              </FirebaseContext.Consumer>
+
             </Col>
           </Row>
         </Container>
