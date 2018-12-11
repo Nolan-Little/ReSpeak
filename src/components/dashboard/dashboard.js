@@ -5,8 +5,9 @@ import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
-import { appendFile } from 'fs';
-// import TEST from './testfirebase' TODO:
+import { FirebaseContext } from './../firebase/firebaseindex'
+import firebase from 'firebase'
+
 export default class Dashboard extends Component {
 
   constructor() {
@@ -85,20 +86,20 @@ export default class Dashboard extends Component {
     let newTitle = {
       title: this.state.editedTitle
     }
-    return api.editData("collections", newTitle, id )
-    .then(() => this.getUserData(userSession.getUser()))
-    .then(()=> {
-      this.setState({
-        editingColName: false,
-        editTarget: null,
-        editedTitle: null,
-        currentTitle: this.state.editedTitle
+    return api.editData("collections", newTitle, id)
+      .then(() => this.getUserData(userSession.getUser()))
+      .then(() => {
+        this.setState({
+          editingColName: false,
+          editTarget: null,
+          editedTitle: null,
+          currentTitle: this.state.editedTitle
+        })
       })
-    })
   }
 
   getNoteId = (timestamp) => {
-     return api.getData(`notes?timestamp=${timestamp}`)
+    return api.getData(`notes?timestamp=${timestamp}`)
   }
 
   handleFieldChange = (evt) => {
@@ -153,7 +154,6 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <TEST/> TODO */}
         <Row>
           <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
           <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>
@@ -166,14 +166,21 @@ export default class Dashboard extends Component {
             newCollection={this.newCollection}
             toggle={this.toggleCollectionForm}
             modal={this.state.newColModal} />
-          <NewNoteForm
-            getNoteId={this.getNoteId}
-            currentCollection={this.state.currentCollection}
-            collections={this.state.collections}
-            newAudio={this.newAudio}
-            newNote={this.newNote}
-            toggle={this.toggleNoteForm}
-            modal={this.state.newNoteModal} />
+          <FirebaseContext.Consumer>
+            {
+              firebase => {
+                return <NewNoteForm
+                  firebase={firebase}
+                  getNoteId={this.getNoteId}
+                  currentCollection={this.state.currentCollection}
+                  collections={this.state.collections}
+                  newAudio={this.newAudio}
+                  newNote={this.newNote}
+                  toggle={this.toggleNoteForm}
+                  modal={this.state.newNoteModal} />
+              }
+            }
+          </FirebaseContext.Consumer>
           <Row>
             <Col xs="4">
               {/* create list of collection titles */}
@@ -195,7 +202,7 @@ export default class Dashboard extends Component {
                             <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                           </Col>
                           <Col xs="2">
-                            <Button onClick={()=> this.editColTitle(col.id)}className="m-1">Save</Button>
+                            <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
                             <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
                           </Col>
                         </React.Fragment>
@@ -206,7 +213,7 @@ export default class Dashboard extends Component {
                             {col.title}
                           </Col>
                           <Col xs="2">
-                            <Button className="m-1" onClick={()=>this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                            <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
                             <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
                           </Col>
                         </React.Fragment>

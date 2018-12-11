@@ -4,6 +4,7 @@ import moment from 'moment'
 import AudioModal from './../audioFiler/audioModal'
 import { FirebaseContext } from './../firebase/firebaseindex'
 import firebase from 'firebase'
+import userSession from './../../modules/userSession'
 
 
 
@@ -14,14 +15,32 @@ export default class NewNoteForm extends Component {
     this.state = {
       title: "New Note",
       textContent: "Empty Note",
-      audioModal: false
+      audioModal: false,
+      collectionId: null,
+      downloadUrl: null,
+      blockAudio: false,
+      audioName: null
     }
   }
+
+
+
+
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
     stateToChange[evt.target.id] = evt.target.value
     this.setState(stateToChange)
+  }
+
+  handleCollectionChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = parseInt(evt.target.value)
+    this.setState(stateToChange)
+  }
+
+  blockAudio = () => {
+    this.setState({ blockAudio: !this.state.blockAudio })
   }
 
   saveDownloadURL = (url) => {
@@ -35,6 +54,8 @@ export default class NewNoteForm extends Component {
     let collectionId = null
     if (this.props.currentCollection === "initial") {
       collectionId = this.props.collections[0].id
+    } else if (this.state.collectionId !== null) {
+      collectionId = this.state.collectionId
     } else {
       collectionId = this.props.currentCollection
     }
@@ -43,7 +64,7 @@ export default class NewNoteForm extends Component {
     let newNote = {
       title: this.state.title,
       textContent: this.state.textContent,
-      timestamp: moment(new Date()).format('lll'),
+      timestamp: Date.now(),
       collectionId: collectionId,
       isPinned: false,
       reminder: false,
@@ -51,14 +72,30 @@ export default class NewNoteForm extends Component {
 
     let audioObj = {
       name: "Audio Note",
-      url: this.state.downloadUrl
+      url: this.state.downloadUrl,
+      ref: `audio${this.state.audioName}.ogg`
     }
 
     this.props.newNote(newNote)
       .then(() => this.props.getNoteId(newNote.timestamp))
       .then((notes) => {
-        let noteId = notes[0].id
-        this.props.newAudio(audioObj, noteId)
+        // retrieve note id by checking against timestamp
+        let noteId
+        notes.forEach((note) => {
+          if (note.timestamp === newNote.timestamp) {
+            noteId = note.id
+          }
+        })
+        if (audioObj.url !== null) {
+          // upload audio object and join table
+          this.props.newAudio(audioObj, noteId)
+
+          // reset state
+          this.setState({
+            downloadUrl: null,
+            audioName: null
+          })
+        }
       })
 
     this.setState({
@@ -68,19 +105,38 @@ export default class NewNoteForm extends Component {
     this.props.toggle()
   }
 
-  resetForm() {
-    this.setState({
-      title: "New Note",
-      textContent: "Empty Note"
-    })
-    this.props.toggle()
+
+  deleteAudioandToggle = () => {
+    if (this.state.downloadUrl !== null) {
+      this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${this.state.audioName}.ogg`)
+      .delete().then((res) => {
+        this.setState({
+          audioName: null,
+          title: "New Note",
+          textContent: "Empty Note"
+        })
+        this.props.toggle()
+      }).catch((res) => {
+        this.setState({
+          audioName: null,
+          title: "New Note",
+          textContent: "Empty Note"
+        })
+        if (res.code_ === "storage/object-not-found") {
+          this.props.toggle()
+        }
+      })
+    } else {
+      this.props.toggle()
+    }
   }
+
 
   createUniqueName = () => {
 
     // creates unique filepath by concatanating collection id and the new current time
 
-    let collectionId = null
+    let collectionId
     if (this.props.currentCollection === "initial") {
       collectionId = this.props.collections[0].id
     } else {
@@ -88,20 +144,32 @@ export default class NewNoteForm extends Component {
     }
 
     let time = Date.now()
-    this.setState({ audioName: collectionId.toString() + (time.toString()) })
+    if (this.state.audioName === null) {
+      this.setState({ audioName: collectionId.toString() + (time.toString()) })
+    }
   }
 
   toggleAudioModal = () => {
     this.createUniqueName()
-    this.setState({ audioModal: !this.state.audioModal })
+    this.setState({
+      audioModal: !this.state.audioModal,
+    })
   }
 
   render() {
     return (
-      <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
+      <Modal isOpen={this.props.modal} toggle={this.deleteAudioandToggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
-          <ModalHeader toggle={this.props.toggle}>
+          <ModalHeader toggle={this.deleteAudioandToggle}>
             <Input onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
+            <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">
+              {
+                this.props.collections.map((col) => {
+                  return <option value={col.id} key={col.id}>{col.title}</option>
+                })
+              }
+
+            </Input>
           </ModalHeader>
           <ModalBody>
             <Container>
@@ -110,11 +178,21 @@ export default class NewNoteForm extends Component {
                   <Input onChange={this.handleFieldChange} id="textContent" type="textarea" placeholder="note contents"></Input>
                 </Col>
                 <Col xs="auto">
-                  <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
+                  {
+                    this.state.blockAudio
+                      ?
+                      <Button color="danger" onClick={(e) => {
+                        e.preventDefault()
+                        alert("Audio disabled, check microphone permissions")
+                      }}>Audio Disabled</Button>
+                      :
+                      <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
+                  }
                   <FirebaseContext.Consumer>
                     {
                       firebase => {
                         return <AudioModal
+                          blockAudio={this.blockAudio}
                           saveDownloadURL={this.saveDownloadURL}
                           audioName={this.state.audioName}
                           firebase={firebase}
@@ -129,7 +207,7 @@ export default class NewNoteForm extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary">Save</Button>{' '}
-            <Button color="secondary" onClick={() => this.resetForm()}>Cancel</Button>
+            <Button color="secondary" onClick={() => this.deleteAudioandToggle()}>Cancel</Button>
           </ModalFooter>
         </Form>
       </Modal>

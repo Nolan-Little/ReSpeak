@@ -9,7 +9,6 @@ export default class NoteDetails extends Component {
       title: null,
       textContent: null,
       collectionId: null,
-      url: null
     }
   }
 
@@ -44,12 +43,11 @@ export default class NoteDetails extends Component {
   }
 
   render() {
-    let url = ""
     if (this.props.modal) {
       this.props.getNoteAudio(this.props.note.id)
-        .then((audio) => {
-          if(audio.length === 1){
-           this.setState({url: audio[0].audio_files.url})
+      .then((audio) => {
+          if (audio.length === 1) {
+            this.setState({ url: audio[0].audio_files.url })
           }
         })
     }
@@ -84,7 +82,13 @@ export default class NoteDetails extends Component {
             <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
           </ModalBody>
           <ModalFooter>
-            <audio src={this.state.url} controls></audio>
+            {
+              this.state.url
+                ?
+                <audio src={this.state.url} controls></audio>
+                :
+                null
+            }
             <Button color="primary" onClick={() => this.saveEdit(this.props.note.id)}>Save Changes</Button>{' '}
             <Button color="secondary" onClick={() => this.props.toggleEditing()}>Cancel</Button>
           </ModalFooter>
@@ -115,7 +119,13 @@ export default class NoteDetails extends Component {
             {this.props.note.textContent}
           </ModalBody>
           <ModalFooter>
-            <audio src={this.state.url} controls></audio>
+            {
+              this.state.url
+                ?
+                <audio src={this.state.url} controls></audio>
+                :
+                null
+            }
             <Button color="primary" onClick={() => {
               this.props.toggleEditing()
               this.setState({
