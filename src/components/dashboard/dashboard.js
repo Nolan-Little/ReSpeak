@@ -7,6 +7,7 @@ import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
 import firebase from 'firebase'
+import { resolve } from 'url';
 
 export default class Dashboard extends Component {
 
@@ -51,9 +52,24 @@ export default class Dashboard extends Component {
       .then(() => this.getUserData(userSession.getUser()))
   }
 
+  // deleteNote = (id) => {
+    // return api.deleteData("notes", id)
+    //   .then(() => this.getUserData(userSession.getUser()))
+  // }
+
   deleteNote = (id) => {
-    return api.deleteData("notes", id)
-      .then(() => this.getUserData(userSession.getUser()))
+    return api.getData(`audio_notes?noteId=${id}`)
+      .then((res) => {
+        return api.getData(`audio_files?id=${res[0].audio_filesId}`)
+          .then((res) => {
+            this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${res[0].ref}.ogg`)
+          }).then((res) => {
+            return api.deleteData(`audio_files`, res[0].audio_filesId)
+          })
+      }).then(() => {
+        return api.deleteData("notes", id)
+        .then(() => this.getUserData(userSession.getUser()))
+      })
   }
 
   newAudio = (audioObj, noteId) => {
@@ -224,12 +240,22 @@ export default class Dashboard extends Component {
               }
             </Col>
             <Col xs="8">
-              <NoteGroup
-                getNoteAudio={this.getNoteAudio}
-                deleteNote={this.deleteNote}
-                editNote={this.editNote}
-                currentCollection={this.state.currentCollection}
-                collections={this.state.collections} />
+
+
+              <FirebaseContext.Consumer>
+                {
+                  firebase => {
+                    return <NoteGroup
+                      firebase={firebase}
+                      getNoteAudio={this.getNoteAudio}
+                      deleteNote={this.deleteNote}
+                      editNote={this.editNote}
+                      currentCollection={this.state.currentCollection}
+                      collections={this.state.collections} />
+                  }
+                }
+              </FirebaseContext.Consumer>
+
             </Col>
           </Row>
         </Container>
