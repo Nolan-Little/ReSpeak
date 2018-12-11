@@ -3,7 +3,8 @@ import { Form, Input, Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, C
 import moment from 'moment'
 import AudioModal from './../audioFiler/audioModal'
 import { FirebaseContext } from './../firebase/firebaseindex'
-import firebase from 'firebase/storage'
+import firebase from 'firebase'
+import userSession from './../../modules/userSession'
 
 
 
@@ -17,9 +18,12 @@ export default class NewNoteForm extends Component {
       audioModal: false,
       collectionId: null,
       downloadUrl: null,
-      blockAudio: false
+      blockAudio: false,
+      audioName: null
     }
   }
+
+
 
 
 
@@ -101,19 +105,34 @@ export default class NewNoteForm extends Component {
     this.props.toggle()
   }
 
-  resetForm() {
-    this.setState({
-      title: "New Note",
-      textContent: "Empty Note"
-    })
-    this.props.toggle()
+
+  deleteAudioandToggle = () => {
+    this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${this.state.audioName}.ogg`)
+      .delete().then((res) => {
+        this.setState({
+          audioName: null,
+          title: "New Note",
+          textContent: "Empty Note"
+        })
+        this.props.toggle()
+      }).catch((res)=> {
+        this.setState({
+          audioName: null,
+          title: "New Note",
+          textContent: "Empty Note"
+        })
+        if (res.code_ === "storage/object-not-found"){
+          this.props.toggle()
+        }
+      })
   }
+
 
   createUniqueName = () => {
 
     // creates unique filepath by concatanating collection id and the new current time
 
-    let collectionId = null
+    let collectionId
     if (this.props.currentCollection === "initial") {
       collectionId = this.props.collections[0].id
     } else {
@@ -128,14 +147,16 @@ export default class NewNoteForm extends Component {
 
   toggleAudioModal = () => {
     this.createUniqueName()
-    this.setState({ audioModal: !this.state.audioModal })
+    this.setState({
+      audioModal: !this.state.audioModal,
+    })
   }
 
   render() {
     return (
-      <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
+      <Modal isOpen={this.props.modal} toggle={this.deleteAudioandToggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
-          <ModalHeader toggle={this.props.toggle}>
+          <ModalHeader toggle={this.deleteAudioandToggle}>
             <Input onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
             <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">
               {
@@ -157,7 +178,7 @@ export default class NewNoteForm extends Component {
                     this.state.blockAudio
                     ?
                     <Button color="danger" onClick={(e) => {
-                      e.preventSubmit()
+                      e.preventDefault()
                       alert("Audio disabled, check microphone permissions")
                     }}>Audio Disabled</Button>
                     :
@@ -182,7 +203,7 @@ export default class NewNoteForm extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary">Save</Button>{' '}
-            <Button color="secondary" onClick={() => this.resetForm()}>Cancel</Button>
+            <Button color="secondary" onClick={() => this.deleteAudioandToggle()}>Cancel</Button>
           </ModalFooter>
         </Form>
       </Modal>
