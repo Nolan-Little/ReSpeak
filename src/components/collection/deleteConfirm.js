@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Modal, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import { Form, Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 
 
 export default class DeleteConfirm extends Component {
@@ -10,6 +10,9 @@ export default class DeleteConfirm extends Component {
           <ModalHeader toggle={this.props.toggle}>
             Are you sure you want to delete this collection?
           </ModalHeader>
+          <ModalBody>
+            All notes in the collection and their audio files will be permanently deleted.
+          </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={() => {
               this.props.deleteCollection(this.props.colId)
