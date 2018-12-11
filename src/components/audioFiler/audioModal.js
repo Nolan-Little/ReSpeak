@@ -17,7 +17,7 @@ export default class AudioModal extends Component {
 
 
   async getMicrophone() {
-   return await navigator.mediaDevices.getUserMedia({
+    return await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false
     }).then((audio) => {
@@ -25,13 +25,13 @@ export default class AudioModal extends Component {
       this.recorder()
 
     })
-    .catch((audio) => {
-      // catch errors if user blocks mic
-      console.log(audio)
-      this.setState({audio: "error"})
-      this.props.blockAudio()
-      this.props.toggle()
-    })
+      .catch((audio) => {
+        // catch errors if user blocks mic
+        console.log(audio)
+        this.setState({ audio: "error" })
+        this.props.blockAudio()
+        this.props.toggle()
+      })
   }
 
   stopMicrophone = () => {

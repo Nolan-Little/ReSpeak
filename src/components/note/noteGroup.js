@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { ListGroup } from 'reactstrap'
 import Note from './note'
+import './note.css'
+
 
 export default class NoteGroup extends Component {
   render() {
     return (
-      <ListGroup>
+      <ListGroup id="noteContainer">
         {
           // "initial is the default value of the current collection state"
           this.props.currentCollection === "initial" && this.props.collections.length > 0
