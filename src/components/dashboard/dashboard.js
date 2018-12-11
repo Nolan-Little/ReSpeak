@@ -6,6 +6,8 @@ import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
+import DeleteConfirm from './../collection/deleteConfirm'
+
 import firebase from 'firebase'
 import { resolve } from 'url';
 
@@ -21,7 +23,8 @@ export default class Dashboard extends Component {
       newColModal: false,
       editingColName: false,
       editTarget: null,
-      editedTitle: null
+      editedTitle: null,
+      deleteConfirmModal: false
     }
   }
 
@@ -177,6 +180,12 @@ export default class Dashboard extends Component {
     })
   }
 
+  toggleDeleteConfirm = () => {
+    this.setState({
+      deleteConfirmModal: !this.state.deleteConfirmModal
+    })
+  }
+
 
 
 
@@ -253,8 +262,13 @@ export default class Dashboard extends Component {
                                 <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
                                 :
                                 <React.Fragment>
-                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
                                   <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
+                                  <Button onClick={() => this.toggleDeleteConfirm} className="m-1">Delete</Button>
+                                  <DeleteConfirm
+                                    colId={col.id}
+                                    deleteCollection={this.deleteCollection}
+                                    toggle={this.toggleDeleteConfirm}
+                                    modal={this.state.deleteConfirmModal} />
                                 </React.Fragment>
                             }
                           </Col>
@@ -273,7 +287,12 @@ export default class Dashboard extends Component {
                                 :
                                 <React.Fragment>
                                   <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
-                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                                  <Button onClick={() => this.toggleDeleteConfirm()} className="m-1">Delete</Button>
+                                  <DeleteConfirm
+                                    colId={col.id}
+                                    deleteCollection={this.deleteCollection}
+                                    toggle={this.toggleDeleteConfirm}
+                                    modal={this.state.deleteConfirmModal} />
                                 </React.Fragment>
                             }
                           </Col>
