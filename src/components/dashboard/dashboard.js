@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
+import { Navbar, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
@@ -28,10 +28,16 @@ export default class Dashboard extends Component {
   componentDidMount() {
     this.getUserData(userSession.getUser())
       .then(() => this.setInitialTitle())
+      .then(() => this.getUserEmail())
 
   }
 
   // API INTERACTIONS
+  getUserEmail = () => {
+    return api.getData(`users?id=${userSession.getUser()}`)
+      .then((res) => this.setState({ userEmail: res[0].email }))
+  }
+
   getUserData = (user) => {
     return api.getData(`collections?userId=${user}&deleted=false&_embed=notes`)
       .then((collections) => this.setState({ collections: collections }))
@@ -177,10 +183,25 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row>
-          <Col sm={{ size: 'auto', offset: 4 }}><h1 className="text-center">Im a dashboard</h1></Col>
-          <Col sm={{ size: 'auto', offset: 2 }}><Button className="m-2" onClick={() => this.props.successfulLogout()}>Logout</Button></Col>
-        </Row>
+        <Navbar color="light">
+          <NavbarBrand>ReSpeak</NavbarBrand>
+          <Nav className="ml-auto" navbar>
+            <Row>
+              <NavItem>
+                {
+                  this.state.userEmail
+                    ?
+                    <NavLink className="m-2">{this.state.userEmail}</NavLink>
+                    :
+                    null
+                }
+              </NavItem>
+              <NavItem>
+                <NavLink><Button className="m-1" onClick={() => this.props.successfulLogout()}>Logout</Button></NavLink>
+              </NavItem>
+            </Row>
+          </Nav>
+        </Navbar>
         <Container className="m-5">
           <h1 className="text-center">{this.state.currentTitle}</h1>
           <Button onClick={this.toggleCollectionForm} className="m-1">New Collection</Button>
