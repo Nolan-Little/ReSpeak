@@ -52,11 +52,6 @@ export default class Dashboard extends Component {
       .then(() => this.getUserData(userSession.getUser()))
   }
 
-  // deleteNote = (id) => {
-  // return api.deleteData("notes", id)
-  //   .then(() => this.getUserData(userSession.getUser()))
-  // }
-
   deleteNote = (id) => {
     return api.getData(`audio_notes?noteId=${id}`)
       .then((res) => {
@@ -95,6 +90,14 @@ export default class Dashboard extends Component {
 
   deleteCollection = (id) => {
     return api.editData("collections", { deleted: true }, id)
+      .then(() => {
+        return api.getData(`notes?collectionId=${id}`)
+          .then((notes) => {
+            notes.forEach((note) => {
+              this.deleteNote(note.id)
+            })
+          })
+      })
       .then(() => this.getUserData(userSession.getUser()))
       .then(() => {
         this.setState({ currentCollection: "initial" })
@@ -205,6 +208,7 @@ export default class Dashboard extends Component {
             <Col xs="4">
               {/* create list of collection titles */}
               {
+
                 this.state.collections.map((col) => {
                   return <ListGroupItem
                     onClick={() => {
@@ -222,8 +226,16 @@ export default class Dashboard extends Component {
                             <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                           </Col>
                           <Col xs="2">
-                            <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
-                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                            {
+                              this.state.collections.length === 1
+                                ?
+                                <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
+                                :
+                                <React.Fragment>
+                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                                  <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
+                                </React.Fragment>
+                            }
                           </Col>
                         </React.Fragment>
                         :
@@ -233,8 +245,16 @@ export default class Dashboard extends Component {
                             {col.title}
                           </Col>
                           <Col xs="2">
-                            <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
-                            <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                            {
+                              this.state.collections.length === 1
+                                ?
+                                <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                                :
+                                <React.Fragment>
+                                  <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
+                                  <Button onClick={() => this.deleteCollection(col.id)} className="m-1">Delete</Button>
+                                </React.Fragment>
+                            }
                           </Col>
                         </React.Fragment>
                     }
