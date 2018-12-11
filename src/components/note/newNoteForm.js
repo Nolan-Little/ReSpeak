@@ -107,7 +107,8 @@ export default class NewNoteForm extends Component {
 
 
   deleteAudioandToggle = () => {
-    this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${this.state.audioName}.ogg`)
+    if (this.state.downloadUrl !== null) {
+      this.props.firebase.audioStorage.child(`user${userSession.getUser()}`).child(`audio${this.state.audioName}.ogg`)
       .delete().then((res) => {
         this.setState({
           audioName: null,
@@ -115,16 +116,19 @@ export default class NewNoteForm extends Component {
           textContent: "Empty Note"
         })
         this.props.toggle()
-      }).catch((res)=> {
+      }).catch((res) => {
         this.setState({
           audioName: null,
           title: "New Note",
           textContent: "Empty Note"
         })
-        if (res.code_ === "storage/object-not-found"){
+        if (res.code_ === "storage/object-not-found") {
           this.props.toggle()
         }
       })
+    } else {
+      this.props.toggle()
+    }
   }
 
 
@@ -176,13 +180,13 @@ export default class NewNoteForm extends Component {
                 <Col xs="auto">
                   {
                     this.state.blockAudio
-                    ?
-                    <Button color="danger" onClick={(e) => {
-                      e.preventDefault()
-                      alert("Audio disabled, check microphone permissions")
-                    }}>Audio Disabled</Button>
-                    :
-                    <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
+                      ?
+                      <Button color="danger" onClick={(e) => {
+                        e.preventDefault()
+                        alert("Audio disabled, check microphone permissions")
+                      }}>Audio Disabled</Button>
+                      :
+                      <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
                   }
                   <FirebaseContext.Consumer>
                     {
