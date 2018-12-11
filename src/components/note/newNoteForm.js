@@ -16,9 +16,12 @@ export default class NewNoteForm extends Component {
       textContent: "Empty Note",
       audioModal: false,
       collectionId: null,
-      downloadUrl: null
+      downloadUrl: null,
+      blockAudio: false
     }
   }
+
+
 
   handleFieldChange = (evt) => {
     const stateToChange = {}
@@ -30,6 +33,10 @@ export default class NewNoteForm extends Component {
     const stateToChange = {}
     stateToChange[evt.target.id] = parseInt(evt.target.value)
     this.setState(stateToChange)
+  }
+
+  blockAudio = () => {
+    this.setState({ blockAudio: !this.state.blockAudio })
   }
 
   saveDownloadURL = (url) => {
@@ -146,11 +153,21 @@ export default class NewNoteForm extends Component {
                   <Input onChange={this.handleFieldChange} id="textContent" type="textarea" placeholder="note contents"></Input>
                 </Col>
                 <Col xs="auto">
-                  <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
+                  {
+                    this.state.blockAudio
+                    ?
+                    <Button color="danger" onClick={(e) => {
+                      e.preventSubmit()
+                      alert("Audio disabled, check microphone permissions")
+                    }}>Audio Disabled</Button>
+                    :
+                    <Button onClick={() => this.toggleAudioModal()}>Record Audio</Button>
+                  }
                   <FirebaseContext.Consumer>
                     {
                       firebase => {
                         return <AudioModal
+                          blockAudio={this.blockAudio}
                           saveDownloadURL={this.saveDownloadURL}
                           audioName={this.state.audioName}
                           firebase={firebase}
