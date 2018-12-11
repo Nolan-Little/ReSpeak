@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Dashboard from '../components/dashboard/dashboard'
 import { FirebaseContext } from './../components/firebase/firebaseindex'
-import firebase from 'firebase'
+import 'firebase'
 
 
 export default class ApplicationViews extends Component {

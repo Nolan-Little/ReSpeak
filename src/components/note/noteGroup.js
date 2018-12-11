@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { ListGroup } from 'reactstrap'
 import Note from './note'
+import './note.css'
+
 
 export default class NoteGroup extends Component {
   render() {
     return (
-      <ListGroup>
+      <ListGroup id="noteContainer">
         {
           // "initial is the default value of the current collection state"
           this.props.currentCollection === "initial" && this.props.collections.length > 0
@@ -30,18 +32,21 @@ export default class NoteGroup extends Component {
             this.props.collections.map((col) => {
 
               return col.notes.map((note) => {
-                if (note.collectionId === this.props.currentCollection)
+                if (note.collectionId === this.props.currentCollection) {
                   return (
                     <Note
-                      firebase={this.props.firebase}
-                      getNoteAudio={this.props.getNoteAudio}
-                      collections={this.props.collections}
-                      deleteNote={this.props.deleteNote}
-                      currentCollection={col.id}
-                      key={note.id}
-                      editNote={this.props.editNote}
-                      note={note} />
-                  )
+                    firebase={this.props.firebase}
+                    getNoteAudio={this.props.getNoteAudio}
+                    collections={this.props.collections}
+                    deleteNote={this.props.deleteNote}
+                    currentCollection={col.id}
+                    key={note.id}
+                    editNote={this.props.editNote}
+                    note={note} />
+                    )
+                  } else {
+                    return null
+                  }
               })
 
             })
