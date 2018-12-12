@@ -263,7 +263,7 @@ export default class Dashboard extends Component {
                 toggleEditColTitle={this.toggleEditColTitle} />
             </Col>
             <Col xs="1" className="new-btn-col">
-              <Button onClick={()=> this.toggleNoteForm()}className="m-1">New Note</Button>
+              <Button onClick={()=> this.toggleNoteForm()}className="m-2">New Note</Button>
             </Col>
             <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
