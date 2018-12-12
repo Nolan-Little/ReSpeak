@@ -6,9 +6,9 @@ import api from './../../modules/apiManager'
 import NewNoteForm from '../note/newNoteForm'
 import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
-import DeleteConfirm from './../collection/deleteConfirm'
 import 'firebase'
 import './dashboard.css'
+import CollectionGroup from '../collection/collectionGroup';
 
 export default class Dashboard extends Component {
 
@@ -262,71 +262,17 @@ export default class Dashboard extends Component {
                 }
               </FirebaseContext.Consumer>
               {/* create list of collection titles */}
-              {
-
-                this.state.collections.map((col) => {
-                  return <ListGroupItem
-                    onClick={() => {
-                      this.selectCollection(col.id)
-                      this.setCurrentTitle(col.title)
-                    }}
-                    key={col.id}>
-
-                    {
-                      this.state.editingColName && this.state.editTarget === col.id
-                        ?
-                        // EDITNG COLLECTION TITLE
-                        <React.Fragment>
-                          <Col xs="auto">
-                            <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
-                          </Col>
-                          <Col xs="2">
-                            {
-                              this.state.collections.length === 1
-                                ?
-                                <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
-                                :
-                                <React.Fragment>
-                                  <Button onClick={() => this.editColTitle(col.id)} className="m-1">Save</Button>
-                                  <Button onClick={() => this.toggleDeleteConfirm} className="m-1">Delete</Button>
-                                  <DeleteConfirm
-                                    colId={col.id}
-                                    deleteCollection={this.deleteCollection}
-                                    toggle={this.toggleDeleteConfirm}
-                                    modal={this.state.deleteConfirmModal} />
-                                </React.Fragment>
-                            }
-                          </Col>
-                        </React.Fragment>
-                        :
-                        // NOT EDITING
-                        <React.Fragment>
-                          <Col xs="auto">
-                            {col.title}
-                          </Col>
-                          <Col xs="2">
-                            {
-                              this.state.collections.length === 1
-                                ?
-                                <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
-                                :
-                                <React.Fragment>
-                                  <Button className="m-1" onClick={() => this.toggleEditColTitle(col.id, col.title)}>Edit</Button>
-                                  <Button onClick={() => this.toggleDeleteConfirm()} className="m-1">Delete</Button>
-                                  <DeleteConfirm
-                                    colId={col.id}
-                                    deleteCollection={this.deleteCollection}
-                                    toggle={this.toggleDeleteConfirm}
-                                    modal={this.state.deleteConfirmModal} />
-                                </React.Fragment>
-                            }
-                          </Col>
-                        </React.Fragment>
-                    }
-
-                  </ListGroupItem>
-                })
-              }
+              <CollectionGroup
+                collections={this.state.collections}
+                  selectCollection={this.selectCollection}
+                  setCurrentTitle={this.setCurrentTitle}
+                  editingColName={this.state.editingColName}
+                  editTarget={this.state.editTarget}
+                  editColTitle={this.editColTitle}
+                  toggleDeleteConfirm={this.toggleDeleteConfirm}
+                  deleteConfirmModal={this.state.deleteConfirmModal}
+                  deleteCollection={this.deleteCollection}
+                  toggleEditColTitle={this.toggleEditColTitle}/>
             </Col>
             <Col xs="8" className="dashboard__note--group">
               <FirebaseContext.Consumer>
