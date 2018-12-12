@@ -1,0 +1,35 @@
+
+
+.dashboard--container {
+  margin-top: 7vh;
+  border: solid 1px rgb(196, 193, 193);
+  border-radius: 5px;
+  height: 70vh;
+}
+
+div.dashboard--row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+div.collection--bar {
+  justify-self: flex-start;
+  border-right: solid 1px black;
+  padding: 0px;
+}
+
+div.dashboard__note--group.col-8 {
+  justify-self: flex-end;
+  color: red;
+}
+
+div.dashboard--header.row {
+  padding-top: 5px;
+  display: flex;
+  border-bottom: 2px solid black;
+}
+
+h1.title {
+  justify-self: center;
+}

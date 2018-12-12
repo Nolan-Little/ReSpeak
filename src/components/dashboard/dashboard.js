@@ -8,6 +8,7 @@ import NewCollectionForm from './../collection/newCollection'
 import { FirebaseContext } from './../firebase/firebaseindex'
 import DeleteConfirm from './../collection/deleteConfirm'
 import 'firebase'
+import './dashboard.css'
 
 export default class Dashboard extends Component {
 
@@ -209,30 +210,36 @@ export default class Dashboard extends Component {
             </Row>
           </Nav>
         </Navbar>
-        <Container className="m-5">
-          {/* <h1 className="text-center">{this.state.currentTitle}</h1> */}
-          <Button onClick={this.toggleCollectionForm} className="m-2">New Collection</Button>
-          <NewCollectionForm
-            newCollection={this.newCollection}
-            toggle={this.toggleCollectionForm}
-            modal={this.state.newColModal} />
-          <FirebaseContext.Consumer>
-            {
-              firebase => {
-                return <NewNoteForm
-                  firebase={firebase}
-                  getNoteId={this.getNoteId}
-                  currentCollection={this.state.currentCollection}
-                  collections={this.state.collections}
-                  newAudio={this.newAudio}
-                  newNote={this.newNote}
-                  toggle={this.toggleNoteForm}
-                  modal={this.state.newNoteModal} />
-              }
-            }
-          </FirebaseContext.Consumer>
-          <Row>
+        <Container className="m-5, dashboard--container">
+          <Row className="dashboard--header">
             <Col xs="3">
+              <Button onClick={this.toggleCollectionForm} className="m-2">New Collection</Button>
+            </Col>
+            <Col xs="6">
+              <h1 className="text-center title">{this.state.currentTitle}</h1>
+            </Col>
+          </Row>
+          <Row className="dashboard--row">
+            <Col xs="auto" className="collection--bar">
+              <NewCollectionForm
+                newCollection={this.newCollection}
+                toggle={this.toggleCollectionForm}
+                modal={this.state.newColModal} />
+              <FirebaseContext.Consumer>
+                {
+                  firebase => {
+                    return <NewNoteForm
+                      firebase={firebase}
+                      getNoteId={this.getNoteId}
+                      currentCollection={this.state.currentCollection}
+                      collections={this.state.collections}
+                      newAudio={this.newAudio}
+                      newNote={this.newNote}
+                      toggle={this.toggleNoteForm}
+                      modal={this.state.newNoteModal} />
+                  }
+                }
+              </FirebaseContext.Consumer>
               {/* create list of collection titles */}
               {
 
@@ -300,23 +307,22 @@ export default class Dashboard extends Component {
                 })
               }
             </Col>
-              <Col xs="8">
-            <h1 className="text-center">{this.state.currentTitle}</h1>
-                <Button onClick={this.toggleNoteForm} className="m-2">New Note</Button>
-                <FirebaseContext.Consumer>
-                  {
-                    firebase => {
-                      return <NoteGroup
-                        firebase={firebase}
-                        getNoteAudio={this.getNoteAudio}
-                        deleteNote={this.deleteNote}
-                        editNote={this.editNote}
-                        currentCollection={this.state.currentCollection}
-                        collections={this.state.collections} />
-                    }
+            <Col xs="8" className="dashboard__note--group">
+              <Button onClick={this.toggleNoteForm} className="m-2">New Note</Button>
+              <FirebaseContext.Consumer>
+                {
+                  firebase => {
+                    return <NoteGroup
+                      firebase={firebase}
+                      getNoteAudio={this.getNoteAudio}
+                      deleteNote={this.deleteNote}
+                      editNote={this.editNote}
+                      currentCollection={this.state.currentCollection}
+                      collections={this.state.collections} />
                   }
-                </FirebaseContext.Consumer>
-              </Col>
+                }
+              </FirebaseContext.Consumer>
+            </Col>
           </Row>
         </Container>
       </React.Fragment>
