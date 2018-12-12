@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './app/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css'
 import Firebase, { FirebaseContext } from './components/firebase/firebaseindex'
+import './index.scss';
 
 const config = {
   apiKey: "AIzaSyAXUA1zzckhR-yUdwa19xAWdmA-Zz1_5zU",

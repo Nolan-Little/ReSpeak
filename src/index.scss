@@ -1,0 +1,23 @@
+/*! `Custom` Bootstrap 4 theme */
+@import url(https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css);
+@import url(https://fonts.googleapis.com/css?family=Poppins:200,300,400,700);
+$font-family-base:Poppins;
+@import url(https://fonts.googleapis.com/css?family=Poppins:200,300,400,700);
+$headings-font-family:Poppins;
+
+$primary:#07689F;
+$secondary:#C9D6DF;
+$success:#11D3BC;
+$danger:#F67280;
+$info:#A2D5F2;
+$warning:#FF7E67;
+$light:#FAFAFA;
+$dark:#4e4e4e;
+$enable-gradients:false;
+$spacer:1rem;
+$border-width:1px;
+$btn-border-radius:.7rem;
+
+// Add SASS theme customizations here..
+
+@import "../node_modules/bootstrap/scss/bootstrap"

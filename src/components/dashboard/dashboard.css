@@ -17,7 +17,7 @@ div.collection--bar {
   justify-self: flex-start;
   border-right: solid 1px black;
   padding: 0px;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 
