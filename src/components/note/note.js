@@ -28,7 +28,7 @@ export default class Note extends Component {
   render() {
     return (
       <React.Fragment>
-        <ListGroupItem key={this.props.note.id}>
+        <ListGroupItem className="note"key={this.props.note.id}>
           <ListGroupItemHeading>{this.props.note.title}</ListGroupItemHeading>
           <Button onClick={() => this.toggle()} className="m-1" color="primary">View Details</Button>
         </ListGroupItem>
