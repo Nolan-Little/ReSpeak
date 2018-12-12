@@ -17,6 +17,7 @@ div.collection--bar {
   justify-self: flex-start;
   border-right: solid 1px black;
   padding: 0px;
+  overflow: scroll;
 }
 
 
@@ -26,10 +27,18 @@ div.dashboard--header.row {
   border-bottom: 2px solid black;
 }
 
+div.dashboard__note--group{
+  margin-left: 2rem;
+}
+
 h1.title {
   justify-self: center;
 }
 
 button.new--dropdown {
   margin-top: .3rem;
+}
+
+div.new-btn-col {
+  padding: 0px;
 }

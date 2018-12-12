@@ -221,20 +221,7 @@ export default class Dashboard extends Component {
         <Container className="m-5, dashboard--container">
           <Row className="dashboard--header">
             <Col xs="3">
-              <Dropdown isOpen={this.state.newDropdownOpen} toggle={this.toggleNewDropdown}>
-                <DropdownToggle className="new--dropdown" caret>
-                  New
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem onClick={this.toggleCollectionForm}>
-                    Collection
-                  </DropdownItem>
-                  <DropdownItem onClick={this.toggleNoteForm}>
-                    Note
-                  </DropdownItem>
-
-                </DropdownMenu>
-              </Dropdown>
+              <Button className="mt-2" onClick={this.toggleCollectionForm}> New Collection</Button>
             </Col>
             <Col xs="6">
               <h1 className="text-center title">{this.state.currentTitle}</h1>
@@ -264,15 +251,18 @@ export default class Dashboard extends Component {
               {/* create list of collection titles */}
               <CollectionGroup
                 collections={this.state.collections}
-                  selectCollection={this.selectCollection}
-                  setCurrentTitle={this.setCurrentTitle}
-                  editingColName={this.state.editingColName}
-                  editTarget={this.state.editTarget}
-                  editColTitle={this.editColTitle}
-                  toggleDeleteConfirm={this.toggleDeleteConfirm}
-                  deleteConfirmModal={this.state.deleteConfirmModal}
-                  deleteCollection={this.deleteCollection}
-                  toggleEditColTitle={this.toggleEditColTitle}/>
+                selectCollection={this.selectCollection}
+                setCurrentTitle={this.setCurrentTitle}
+                editingColName={this.state.editingColName}
+                editTarget={this.state.editTarget}
+                editColTitle={this.editColTitle}
+                toggleDeleteConfirm={this.toggleDeleteConfirm}
+                deleteConfirmModal={this.state.deleteConfirmModal}
+                deleteCollection={this.deleteCollection}
+                toggleEditColTitle={this.toggleEditColTitle} />
+            </Col>
+            <Col xs="1" className="new-btn-col">
+              <Button onClick={()=> this.toggleNoteForm()}className="m-1">New Note</Button>
             </Col>
             <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
