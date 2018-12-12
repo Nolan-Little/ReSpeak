@@ -2,7 +2,7 @@
 
 .dashboard--container {
   margin-top: 7vh;
-  border: solid 1px rgb(196, 193, 193);
+  border: solid 1px black;
   border-radius: 5px;
   height: 70vh;
 }
@@ -10,8 +10,7 @@
 div.dashboard--row {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
-  height: 59.5vh;
+  height: 23.2rem;
 }
 
 div.collection--bar {
@@ -20,9 +19,6 @@ div.collection--bar {
   padding: 0px;
 }
 
-div.dashboard__note--group.col-8 {
-  justify-self: flex-end;
-}
 
 div.dashboard--header.row {
   padding-top: 5px;

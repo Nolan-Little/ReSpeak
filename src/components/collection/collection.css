@@ -1,0 +1,4 @@
+li.collection--item.list-group-item {
+  border-bottom: solid 1px black;
+  border-radius: 0;
+}

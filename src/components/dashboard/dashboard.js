@@ -274,7 +274,7 @@ export default class Dashboard extends Component {
                   deleteCollection={this.deleteCollection}
                   toggleEditColTitle={this.toggleEditColTitle}/>
             </Col>
-            <Col xs="8" className="dashboard__note--group">
+            <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
                 {
                   firebase => {

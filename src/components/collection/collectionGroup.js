@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Col, ListGroupItem, Input } from 'reactstrap';
 import DeleteConfirm from './deleteConfirm'
+import './collection.css'
 export default class CollectionGroup extends Component {
 
   handleFieldChange = (evt) => {
@@ -16,6 +17,7 @@ export default class CollectionGroup extends Component {
 
           this.props.collections.map((col) => {
             return <ListGroupItem
+              className="collection--item"
               onClick={() => {
                 this.props.selectCollection(col.id)
                 this.props.setCurrentTitle(col.title)
