@@ -11,6 +11,7 @@ div.dashboard--row {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  height: 59.5vh;
 }
 
 div.collection--bar {
@@ -21,7 +22,6 @@ div.collection--bar {
 
 div.dashboard__note--group.col-8 {
   justify-self: flex-end;
-  color: red;
 }
 
 div.dashboard--header.row {
@@ -32,4 +32,8 @@ div.dashboard--header.row {
 
 h1.title {
   justify-self: center;
+}
+
+button.new--dropdown {
+  margin-top: .3rem;
 }

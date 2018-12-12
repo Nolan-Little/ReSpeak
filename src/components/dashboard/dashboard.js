@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
+import { Navbar, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
@@ -23,7 +23,8 @@ export default class Dashboard extends Component {
       editingColName: false,
       editTarget: null,
       editedTitle: null,
-      deleteConfirmModal: false
+      deleteConfirmModal: false,
+      newDropdownOpen: false
     }
   }
 
@@ -185,6 +186,13 @@ export default class Dashboard extends Component {
     })
   }
 
+  toggleNewDropdown = () => {
+    this.setState({
+      newDropdownOpen: !this.state.newDropdownOpen
+    })
+  }
+
+
 
 
 
@@ -213,14 +221,27 @@ export default class Dashboard extends Component {
         <Container className="m-5, dashboard--container">
           <Row className="dashboard--header">
             <Col xs="3">
-              <Button onClick={this.toggleCollectionForm} className="m-2">New Collection</Button>
+              <Dropdown isOpen={this.state.newDropdownOpen} toggle={this.toggleNewDropdown}>
+                <DropdownToggle className="new--dropdown" caret>
+                  New
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={this.toggleCollectionForm}>
+                    Collection
+                  </DropdownItem>
+                  <DropdownItem onClick={this.toggleNoteForm}>
+                    Note
+                  </DropdownItem>
+
+                </DropdownMenu>
+              </Dropdown>
             </Col>
             <Col xs="6">
               <h1 className="text-center title">{this.state.currentTitle}</h1>
             </Col>
           </Row>
           <Row className="dashboard--row">
-            <Col xs="auto" className="collection--bar">
+            <Col xs="2" className="collection--bar">
               <NewCollectionForm
                 newCollection={this.newCollection}
                 toggle={this.toggleCollectionForm}
@@ -308,7 +329,6 @@ export default class Dashboard extends Component {
               }
             </Col>
             <Col xs="8" className="dashboard__note--group">
-              <Button onClick={this.toggleNoteForm} className="m-2">New Note</Button>
               <FirebaseContext.Consumer>
                 {
                   firebase => {
