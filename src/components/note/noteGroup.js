@@ -32,7 +32,7 @@ export default class NoteGroup extends Component {
                   <Alert
                     isOpen={this.state.visible}
                     toggle={this.onDismiss}
-                    color="success">
+                    color="danger">
                     This collection is empty, try adding a New Note!
                   </Alert>
                 </Col>
@@ -63,7 +63,7 @@ export default class NoteGroup extends Component {
                       <Alert
                         isOpen={this.state.visible}
                         toggle={this.onDismiss}
-                        color="success">
+                        color="danger">
                         This collection is empty, try adding a New Note!
                       </Alert>
                     </Col>

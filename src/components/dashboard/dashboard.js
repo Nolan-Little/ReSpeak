@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container, ListGroupItem, Input } from 'reactstrap';
+import { Navbar, NavbarBrand, NavLink, NavItem, Nav, Button, Row, Col, Container} from 'reactstrap';
 import NoteGroup from '../note/noteGroup'
 import userSession from './../../modules/userSession'
 import api from './../../modules/apiManager'
@@ -217,21 +217,23 @@ export default class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar color="light">
-          <NavbarBrand>ReSpeak</NavbarBrand>
+        <Navbar color="info" dark>
+          <NavbarBrand color="light"><h1>ReSpeak</h1></NavbarBrand>
           <Nav className="ml-auto" navbar>
             <Row>
               <NavItem>
                 {
                   this.state.userEmail
                     ?
-                    <NavLink className="m-2">{this.state.userEmail}</NavLink>
+                    <NavLink className="m-2">
+                      <h5>{this.state.userEmail}</h5>
+                    </NavLink>
                     :
                     null
                 }
               </NavItem>
               <NavItem>
-                <NavLink><Button className="m-1" onClick={() => this.props.successfulLogout()}>Logout</Button></NavLink>
+                <NavLink><Button className="m-1 mr-4" onClick={() => this.props.successfulLogout()}>Logout</Button></NavLink>
               </NavItem>
             </Row>
           </Nav>
@@ -239,7 +241,10 @@ export default class Dashboard extends Component {
         <Container className="m-5, dashboard--container">
           <Row className="dashboard--header">
             <Col xs="3">
-              <Button className="mt-2" onClick={this.toggleCollectionForm}> New Collection</Button>
+              <Button className="mt-2" onClick={this.toggleCollectionForm}>
+                <i className="icon-plus m-1"></i>
+                Collection
+               </Button>
             </Col>
             <Col xs="6">
               <h1 className="text-center title">{this.state.currentTitle}</h1>
@@ -284,7 +289,10 @@ export default class Dashboard extends Component {
                 toggleEditColTitle={this.toggleEditColTitle} />
             </Col>
             <Col xs="1" className="new-btn-col">
-              <Button onClick={() => this.toggleNoteForm()} className="m-2">New Note</Button>
+              <Button onClick={() => this.toggleNoteForm()} className="m-2">
+                <i className="icon-plus m-1"></i>
+                Note
+              </Button>
             </Col>
             <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
