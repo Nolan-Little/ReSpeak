@@ -63,7 +63,7 @@ export default class NoteDetails extends Component {
             <Row>
               <Col xs={{ size: 'auto', offset: 1 }}>
                 <Row>
-                  <Input onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
+                  <Input maxlength="27" onChange={(e) => this.handleFieldChange(e)} id="title" type="text" defaultValue={this.props.note.title}></Input>
                 </Row>
                 <Row>
                   <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">

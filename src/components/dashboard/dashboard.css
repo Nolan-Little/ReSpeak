@@ -5,12 +5,13 @@
   border: solid 2px rgb(59, 55, 55);
   border-radius: 5px;
   height: 70vh;
+  overflow: hidden;
 }
 
 div.dashboard--row {
   display: flex;
   flex-flow: row wrap;
-  height: 23.2rem;
+  height: 30rem;
 }
 
 div.collection--bar {

@@ -48,7 +48,7 @@ export default class CollectionGroup extends Component {
                   // EDITNG COLLECTION TITLE
                   <React.Fragment>
                     <Col xs="auto p-0">
-                      <Input autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
+                      <Input maxlength="27" autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                     </Col>
                     <Col xs="2">
                       {
