@@ -1,10 +1,23 @@
 import React, { Component } from 'react'
-import { ListGroup } from 'reactstrap'
+import { Alert, ListGroup, Row, Col } from 'reactstrap'
 import Note from './note'
 import './note.css'
 
 
 export default class NoteGroup extends Component {
+  constructor() {
+    super()
+    this.state = {
+      visible: true
+    }
+  }
+
+  onDismiss = () => {
+    this.setState({ visible: false });
+  }
+
+
+
   render() {
     return (
       <ListGroup id="noteContainer">
@@ -14,7 +27,16 @@ export default class NoteGroup extends Component {
             ?
             this.props.collections[0].notes.length === 0
               ?
-              <h1> nothing</h1>
+              <Row className="d-flex justify-content-center m-5">
+                <Col lg={{ size: "auto", offset: 3 }}>
+                  <Alert
+                    isOpen={this.state.visible}
+                    toggle={this.onDismiss}
+                    color="success">
+                    This collection is empty, try adding a New Note!
+                  </Alert>
+                </Col>
+              </Row>
               :
               this.props.collections[0].notes.map((note) => {
                 return (
@@ -35,7 +57,18 @@ export default class NoteGroup extends Component {
             // if other than initial, match current collection with correct col and loop over its notes.
             this.props.collections.map((col) => {
               if (col.notes.length === 0 && col.id === this.props.currentCollection) {
-                return <h1>Nothing</h1>
+                return (
+                  <Row className="d-flex justify-content-center m-5">
+                    <Col lg={{ size: "auto", offset: 3 }}>
+                      <Alert
+                        isOpen={this.state.visible}
+                        toggle={this.onDismiss}
+                        color="success">
+                        This collection is empty, try adding a New Note!
+                      </Alert>
+                    </Col>
+                  </Row>
+                )
               } else {
                 return col.notes.map((note) => {
                   if (note.collectionId === this.props.currentCollection) {
