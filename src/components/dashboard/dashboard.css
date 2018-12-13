@@ -2,7 +2,7 @@
 
 .dashboard--container {
   margin-top: 7vh;
-  border: solid 1px black;
+  border: solid 2px rgb(59, 55, 55);
   border-radius: 5px;
   height: 70vh;
 }
@@ -15,7 +15,7 @@ div.dashboard--row {
 
 div.collection--bar {
   justify-self: flex-start;
-  border-right: solid 1px black;
+  border-right: solid 2px rgb(59, 55, 55);
   padding: 0px;
   overflow-x: scroll;
 }
@@ -24,7 +24,7 @@ div.collection--bar {
 div.dashboard--header.row {
   padding-top: 5px;
   display: flex;
-  border-bottom: 2px solid black;
+  border-bottom: solid 2px rgb(59, 55, 55);
 }
 
 div.dashboard__note--group{
