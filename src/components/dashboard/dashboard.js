@@ -228,7 +228,7 @@ export default class Dashboard extends Component {
             </Col>
           </Row>
           <Row className="dashboard--row">
-            <Col xs="2" className="collection--bar">
+            <Col xs="3" className="collection--bar">
               <NewCollectionForm
                 newCollection={this.newCollection}
                 toggle={this.toggleCollectionForm}
@@ -250,6 +250,7 @@ export default class Dashboard extends Component {
               </FirebaseContext.Consumer>
               {/* create list of collection titles */}
               <CollectionGroup
+                currentCollection={this.state.currentCollection}
                 collections={this.state.collections}
                 selectCollection={this.selectCollection}
                 setCurrentTitle={this.setCurrentTitle}
@@ -262,7 +263,7 @@ export default class Dashboard extends Component {
                 toggleEditColTitle={this.toggleEditColTitle} />
             </Col>
             <Col xs="1" className="new-btn-col">
-              <Button onClick={()=> this.toggleNoteForm()}className="m-1">New Note</Button>
+              <Button onClick={()=> this.toggleNoteForm()}className="m-2">New Note</Button>
             </Col>
             <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
