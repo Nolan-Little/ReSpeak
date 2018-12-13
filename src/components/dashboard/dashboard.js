@@ -140,6 +140,12 @@ export default class Dashboard extends Component {
     this.setState(stateToChange)
   }
 
+  handleCollectionFieldChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
 
 
   // COLLECTION STATE
@@ -182,7 +188,13 @@ export default class Dashboard extends Component {
 
   toggleDeleteConfirm = () => {
     this.setState({
-      deleteConfirmModal: !this.state.deleteConfirmModal
+      deleteConfirmModal: !this.state.deleteConfirmModal,
+    })
+  }
+
+  setDeleteTarget = (id) => {
+    this.setState({
+      deleteTarget: id
     })
   }
 
@@ -250,6 +262,8 @@ export default class Dashboard extends Component {
               </FirebaseContext.Consumer>
               {/* create list of collection titles */}
               <CollectionGroup
+                setDeleteTarget={this.setDeleteTarget}
+                handleCollectionFieldChange={this.handleCollectionFieldChange}
                 currentCollection={this.state.currentCollection}
                 collections={this.state.collections}
                 selectCollection={this.selectCollection}
@@ -258,6 +272,7 @@ export default class Dashboard extends Component {
                 editTarget={this.state.editTarget}
                 editColTitle={this.editColTitle}
                 toggleDeleteConfirm={this.toggleDeleteConfirm}
+                deleteTarget={this.state.deleteTarget}
                 deleteConfirmModal={this.state.deleteConfirmModal}
                 deleteCollection={this.deleteCollection}
                 toggleEditColTitle={this.toggleEditColTitle} />

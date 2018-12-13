@@ -4,20 +4,15 @@ import DeleteConfirm from './deleteConfirm'
 import './collection.css'
 export default class CollectionGroup extends Component {
 
-  handleFieldChange = (evt) => {
-    const stateToChange = {}
-    stateToChange[evt.target.id] = evt.target.value
-    this.setState(stateToChange)
-  }
 
   setActive = (id) => {
-    if (id === this.props.currentCollection){
+    if (id === this.props.currentCollection) {
       return "dark"
     }
   }
 
   setInitial = (id) => {
-    if(this.props.collections[0].id === id){
+    if (this.props.collections[0].id === id) {
       return "dark"
     }
   }
@@ -42,18 +37,18 @@ export default class CollectionGroup extends Component {
               key={col.id}
               color={
                 this.props.currentCollection === "initial"
-                ?
-                this.setInitial(col.id)
-                :
-                this.setActive(col.id)
-                }>
+                  ?
+                  this.setInitial(col.id)
+                  :
+                  this.setActive(col.id)
+              }>
               {
                 this.props.editingColName && this.props.editTarget === col.id
                   ?
                   // EDITNG COLLECTION TITLE
                   <React.Fragment>
                     <Col xs="auto p-0">
-                      <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
+                      <Input autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                     </Col>
                     <Col xs="2">
                       {
@@ -87,23 +82,33 @@ export default class CollectionGroup extends Component {
                           <React.Fragment>
                             <ButtonGroup>
                               <Button color="primary" onClick={() => this.props.toggleEditColTitle(col.id, col.title)}><i className="icon-pencil"></i></Button>
-                              <Button color="primary" onClick={() => this.props.toggleDeleteConfirm()}><i className="icon-trash"></i></Button>
+                              <Button color="primary" onClick={() => {
+                                this.props.toggleDeleteConfirm()
+                                this.props.setDeleteTarget(col.id)
+                              }
+                            }>
+                            <i className="icon-trash"></i></Button>
                             </ButtonGroup>
-                            <DeleteConfirm
-                              colId={col.id}
-                              deleteCollection={this.props.deleteCollection}
-                              toggle={this.props.toggleDeleteConfirm}
-                              modal={this.props.deleteConfirmModal} />
+                            {
+                              this.props.deleteTarget === col.id
+                              ?
+                              <DeleteConfirm
+                                colId={col.id}
+                                deleteCollection={this.props.deleteCollection}
+                                toggle={this.props.toggleDeleteConfirm}
+                                modal={this.props.deleteConfirmModal} />
+                                : null
+                              }
                           </React.Fragment>
-                      }
+                        }
                     </Col>
                   </React.Fragment>
-              }
+                  }
 
             </ListGroupItem>
-          })
-        }
+                    })
+                  }
       </React.Fragment>
     )
-  }
+              }
 }
