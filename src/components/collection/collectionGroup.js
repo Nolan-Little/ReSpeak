@@ -7,13 +7,13 @@ export default class CollectionGroup extends Component {
 
   setActive = (id) => {
     if (id === this.props.currentCollection) {
-      return "dark"
+      return "primary"
     }
   }
 
   setInitial = (id) => {
     if (this.props.collections[0].id === id) {
-      return "dark"
+      return "primary"
     }
   }
 
