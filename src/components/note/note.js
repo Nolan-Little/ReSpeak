@@ -39,7 +39,7 @@ export default class Note extends Component {
       <React.Fragment>
         <ListGroupItem className="note" key={this.props.note.id}>
           <Row>
-            <ListGroupItemHeading>{this.props.note.title}</ListGroupItemHeading>
+            <ListGroupItemHeading className="ml-1">{this.props.note.title}</ListGroupItemHeading>
             <Col>
               {
                 this.state.url
