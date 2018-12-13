@@ -54,10 +54,10 @@ export default class CollectionGroup extends Component {
                       {
                         this.props.collections.length === 1
                           ?
-                          <Button onClick={() => this.props.editColTitle(col.id)} className="m-1">Save</Button>
+                          <Button color="primary" onClick={() => this.props.editColTitle(col.id)} className="m-2">Save</Button>
                           :
                           <React.Fragment>
-                            <Button onClick={() => this.props.editColTitle(col.id)} className="m-1">Save</Button>
+                            <Button color="primary" onClick={() => this.props.editColTitle(col.id)} className="m-2">Save</Button>
                             <DeleteConfirm
                               colId={col.id}
                               deleteCollection={this.props.deleteCollection}
