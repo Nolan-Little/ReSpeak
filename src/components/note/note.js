@@ -13,15 +13,6 @@ export default class Note extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.getNoteAudio(this.props.note.id)
-    .then((audio) => {
-        if (audio.length === 1) {
-          this.setState({ url: audio[0].audio_files.url })
-        }
-      })
-  }
-
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
@@ -35,19 +26,28 @@ export default class Note extends Component {
 
 
   render() {
+    if (!this.state.url) {
+      this.props.getNoteAudio(this.props.note.id)
+        .then((audio) => {
+          if (audio.length === 1) {
+            this.setState({ url: audio[0].audio_files.url })
+          }
+        })
+    }
+
     return (
       <React.Fragment>
         <ListGroupItem className="note" key={this.props.note.id}>
           <Row>
             <ListGroupItemHeading>{this.props.note.title}</ListGroupItemHeading>
             <Col>
-            {
-              this.state.url
-              ?
-              <i className="icon-volume-2"></i>
-              :
-              null
-            }
+              {
+                this.state.url
+                  ?
+                  <i className="icon-volume-2"></i>
+                  :
+                  null
+              }
             </Col>
           </Row>
           <Row>
