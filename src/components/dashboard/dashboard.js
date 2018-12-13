@@ -94,6 +94,12 @@ export default class Dashboard extends Component {
 
   newCollection = (colObj) => {
     return api.saveData("collections", colObj)
+      .then((res) => {
+        this.setState({
+          currentCollection: res.id,
+          currentTitle: res.title
+        })
+      })
       .then(() => this.getUserData(userSession.getUser()))
   }
 
@@ -278,7 +284,7 @@ export default class Dashboard extends Component {
                 toggleEditColTitle={this.toggleEditColTitle} />
             </Col>
             <Col xs="1" className="new-btn-col">
-              <Button onClick={()=> this.toggleNoteForm()}className="m-2">New Note</Button>
+              <Button onClick={() => this.toggleNoteForm()} className="m-2">New Note</Button>
             </Col>
             <Col sm={{ size: '4', offset: 1 }} className="dashboard__note--group">
               <FirebaseContext.Consumer>
