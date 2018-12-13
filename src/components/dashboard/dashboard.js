@@ -140,6 +140,12 @@ export default class Dashboard extends Component {
     this.setState(stateToChange)
   }
 
+  handleCollectionFieldChange = (evt) => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
 
 
   // COLLECTION STATE
@@ -250,6 +256,7 @@ export default class Dashboard extends Component {
               </FirebaseContext.Consumer>
               {/* create list of collection titles */}
               <CollectionGroup
+                handleCollectionFieldChange={this.handleCollectionFieldChange}
                 currentCollection={this.state.currentCollection}
                 collections={this.state.collections}
                 selectCollection={this.selectCollection}

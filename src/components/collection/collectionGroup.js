@@ -4,11 +4,6 @@ import DeleteConfirm from './deleteConfirm'
 import './collection.css'
 export default class CollectionGroup extends Component {
 
-  handleFieldChange = (evt) => {
-    const stateToChange = {}
-    stateToChange[evt.target.id] = evt.target.value
-    this.setState(stateToChange)
-  }
 
   setActive = (id) => {
     if (id === this.props.currentCollection){
@@ -53,7 +48,7 @@ export default class CollectionGroup extends Component {
                   // EDITNG COLLECTION TITLE
                   <React.Fragment>
                     <Col xs="auto p-0">
-                      <Input autoFocus onChange={(e) => this.handleFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
+                      <Input autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                     </Col>
                     <Col xs="2">
                       {
