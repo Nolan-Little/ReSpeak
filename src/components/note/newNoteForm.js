@@ -160,7 +160,7 @@ export default class NewNoteForm extends Component {
       <Modal isOpen={this.props.modal} toggle={this.deleteAudioandToggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
           <ModalHeader toggle={this.deleteAudioandToggle}>
-            <Input maxlength="27" onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
+            <Input maxLength="27" onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>
             <Input id="collectionId" defaultValue={this.props.currentCollection} onChange={(e) => this.handleCollectionChange(e)} type="select">
               {
                 this.props.collections.map((col) => {

@@ -58,7 +58,7 @@ export default class NoteGroup extends Component {
             this.props.collections.map((col) => {
               if (col.notes.length === 0 && col.id === this.props.currentCollection) {
                 return (
-                  <Row className="d-flex justify-content-center m-5">
+                  <Row  key={col.id} className="d-flex justify-content-center m-5">
                     <Col lg={{ size: "auto", offset: 3 }}>
                       <Alert
                         isOpen={this.state.visible}
