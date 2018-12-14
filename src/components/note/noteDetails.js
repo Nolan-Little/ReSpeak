@@ -79,7 +79,7 @@ export default class NoteDetails extends Component {
             </Row>
           </ModalHeader>
           <ModalBody>
-            <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="text" defaultValue={this.props.note.textContent}></Input>
+            <Input onChange={(e) => this.handleFieldChange(e)} id="textContent" type="textarea" defaultValue={this.props.note.textContent}></Input>
           </ModalBody>
           <ModalFooter>
             {

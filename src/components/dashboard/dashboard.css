@@ -11,7 +11,7 @@
 div.dashboard--row {
   display: flex;
   flex-flow: row wrap;
-  height: 30rem;
+  height: inherit;
 }
 
 div.collection--bar {
@@ -19,6 +19,7 @@ div.collection--bar {
   border-right: solid 2px rgb(59, 55, 55);
   padding: 0px;
   overflow-x: scroll;
+  height: inherit;
 }
 
 
