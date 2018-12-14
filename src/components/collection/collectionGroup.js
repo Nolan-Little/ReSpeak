@@ -7,13 +7,13 @@ export default class CollectionGroup extends Component {
 
   setActive = (id) => {
     if (id === this.props.currentCollection) {
-      return "dark"
+      return "primary"
     }
   }
 
   setInitial = (id) => {
     if (this.props.collections[0].id === id) {
-      return "dark"
+      return "primary"
     }
   }
 
@@ -48,16 +48,16 @@ export default class CollectionGroup extends Component {
                   // EDITNG COLLECTION TITLE
                   <React.Fragment>
                     <Col xs="auto p-0">
-                      <Input autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
+                      <Input maxLength="27" autoFocus onChange={(e) => this.props.handleCollectionFieldChange(e)} id="editedTitle" type="text" defaultValue={col.title}></Input>
                     </Col>
                     <Col xs="2">
                       {
                         this.props.collections.length === 1
                           ?
-                          <Button onClick={() => this.props.editColTitle(col.id)} className="m-1">Save</Button>
+                          <Button color="primary" onClick={() => this.props.editColTitle(col.id)} className="m-2">Save</Button>
                           :
                           <React.Fragment>
-                            <Button onClick={() => this.props.editColTitle(col.id)} className="m-1">Save</Button>
+                            <Button color="primary" onClick={() => this.props.editColTitle(col.id)} className="m-2">Save</Button>
                             <DeleteConfirm
                               colId={col.id}
                               deleteCollection={this.props.deleteCollection}
