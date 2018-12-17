@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import 'firebase'
 import userSession from './../../modules/userSession'
+import Visualizer from './visualizer'
 
 
 export default class AudioModal extends Component {
@@ -23,7 +24,6 @@ export default class AudioModal extends Component {
     }).then((audio) => {
       this.setState({ audio })
       this.recorder()
-
     })
       .catch((audio) => {
         // catch errors if user blocks mic
@@ -110,7 +110,6 @@ export default class AudioModal extends Component {
     this.props.toggle()
   }
 
-
   render() {
     if (this.props.modal && this.state.audio === null) {
       this.getMicrophone()
@@ -124,13 +123,25 @@ export default class AudioModal extends Component {
           <div className="App">
             <main>
               <div className="controls">
-                <button onClick={() => this.toggleRecording()}>
+                <button onClick={() => {
+                  this.toggleRecording()
+                }}>
                   {this.state.recording ? 'Stop' : 'Start Recording'}
                 </button>
                 <audio controls src={this.state.audioURL} />
               </div>
             </main>
           </div>
+          {
+            this.state.audio
+              ?
+              <Visualizer
+                recording={this.state.recording}
+                audio={this.state.audio}
+                height={100}
+                width={300}/>
+              : null
+          }
         </ModalBody>
         <ModalFooter>
           {
