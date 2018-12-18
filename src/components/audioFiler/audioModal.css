@@ -1,0 +1,16 @@
+.record-icon{
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+}
+
+.stop-icon{
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+}
+
+.visualizer {
+  background-color: black;
+  border-radius: 10px;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import * as d3 from "d3"
+import './audioModal.css'
 
 export default class Visualizer extends Component {
   // audio analyzer
@@ -39,11 +39,11 @@ export default class Visualizer extends Component {
         dataSet = analyse()
 
         canvasCtx.clearRect(0, 0, WIDTH, HEIGHT)
-        canvasCtx.fillStyle = 'rgb(22,107,161)'
+        canvasCtx.fillStyle = 'black'
         canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
 
         canvasCtx.lineWidth = 2
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)'
+        canvasCtx.strokeStyle = 'rgb(51, 255, 51)'
 
 
         canvasCtx.beginPath()

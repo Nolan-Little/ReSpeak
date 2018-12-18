@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import { Row, Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import { Row, Col, Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import 'firebase'
 import userSession from './../../modules/userSession'
 import Visualizer from './visualizer'
+import recordIcon from './../../../src/images/recordericon.png'
+import stopIcon from './../../../src/images/stopIcon.ico'
+import './audioModal.css'
 
 
 export default class AudioModal extends Component {
@@ -119,26 +122,38 @@ export default class AudioModal extends Component {
     return (
       <Modal isOpen={this.props.modal} toggle={this.toggleStopRecording} className={this.props.className}>
         <ModalHeader toggle={this.toggleStopRecording}>
+        Press Record Button to begin.
         </ModalHeader>
-        <ModalBody>
+        <ModalBody className="d-flex justify-content-center">
           <Row>
-            <div className="controls">
-              <button onClick={() => {
-                this.toggleRecording()
-              }}>
-                {this.state.recording ? 'Stop' : 'Start Recording'}
-              </button>
-            </div>
-            {
-              this.state.audio
-                ?
-                <Visualizer
-                  recording={this.state.recording}
-                  audio={this.state.audio}
-                  height={100}
-                  width={300} />
-                : null
-            }
+            <Col xs="2" className="controls d-flex align-items-center justify-content-center">
+              {
+                this.state.recording
+                  ?
+                  <img
+                    src={stopIcon}
+                    className="stop-icon"
+                    alt="recorder stop icon"
+                    onClick={() => {
+                      this.toggleRecording()
+                    }}></img>
+                  :
+                  <img
+                    src={recordIcon}
+                    className="record-icon"
+                    alt="recorder start icon"
+                    onClick={() => {
+                      this.toggleRecording()
+                    }}></img>
+              }
+            </Col>
+            <Col>
+              <Visualizer
+                recording={this.state.recording}
+                audio={this.state.audio}
+                height={100}
+                width={300} />
+            </Col>
           </Row>
         </ModalBody>
         <ModalFooter>
