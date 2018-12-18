@@ -128,7 +128,6 @@ export default class AudioModal extends Component {
                 }}>
                   {this.state.recording ? 'Stop' : 'Start Recording'}
                 </button>
-                <audio controls src={this.state.audioURL} />
               </div>
             </main>
           </div>
@@ -144,6 +143,7 @@ export default class AudioModal extends Component {
           }
         </ModalBody>
         <ModalFooter>
+        <audio disabled controls src={this.state.audioURL} />
           {
             this.state.noAudioErr
               ?

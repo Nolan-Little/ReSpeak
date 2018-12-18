@@ -3,14 +3,6 @@ import React, { Component } from 'react'
 
 export default class Visualizer extends Component {
   // audio analyzer
-  // createContext = (stream) => {
-  //   let ctx = new (window.AudioContext || window.webkitAudioContext)()
-  //   let audioSrc = ctx.createMediaStreamSource(stream)
-  //   let analyser = ctx.createAnalyser()
-  //   audioSrc.connect(analyser)
-  //   analyser.fftSize = 2048
-  // }
-
 
   startGraph(stream) {
 
@@ -27,12 +19,20 @@ export default class Visualizer extends Component {
     }
 
     let drawGraph = () => {
-
-      let canvas = this.refs.visualizerCanvas
-      let canvasCtx = canvas.getContext("2d")
+      let canvasCtx
+      let canvas
       let dataSet
-      let WIDTH = this.props.width;
-      let HEIGHT = this.props.height;
+      let WIDTH
+      let HEIGHT
+
+      if (this.refs.visualizerCanvas){
+       canvas = this.refs.visualizerCanvas
+       canvasCtx = canvas.getContext("2d")
+       WIDTH = this.props.width;
+       HEIGHT = this.props.height;
+      } else {
+        return
+      }
 
       let draw = () => {
         window.requestAnimationFrame(drawGraph)
@@ -71,15 +71,13 @@ export default class Visualizer extends Component {
         draw()
       }
     }
-    drawGraph()
+      drawGraph()
   }
 
 
   render() {
     if (this.props.recording) {
       this.startGraph(this.props.audio)
-    } else {
-      console.log("hello")
     }
     return (
       <React.Fragment>
