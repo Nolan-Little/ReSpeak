@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import { Row, Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import 'firebase'
 import userSession from './../../modules/userSession'
 import Visualizer from './visualizer'
@@ -107,6 +107,7 @@ export default class AudioModal extends Component {
 
   toggleStopRecording = () => {
     this.stopMicrophone()
+    this.setState({ recording: false })
     this.props.toggle()
   }
 
@@ -120,30 +121,28 @@ export default class AudioModal extends Component {
         <ModalHeader toggle={this.toggleStopRecording}>
         </ModalHeader>
         <ModalBody>
-          <div className="App">
-            <main>
-              <div className="controls">
-                <button onClick={() => {
-                  this.toggleRecording()
-                }}>
-                  {this.state.recording ? 'Stop' : 'Start Recording'}
-                </button>
-              </div>
-            </main>
-          </div>
-          {
-            this.state.audio
-              ?
-              <Visualizer
-                recording={this.state.recording}
-                audio={this.state.audio}
-                height={100}
-                width={300}/>
-              : null
-          }
+          <Row>
+            <div className="controls">
+              <button onClick={() => {
+                this.toggleRecording()
+              }}>
+                {this.state.recording ? 'Stop' : 'Start Recording'}
+              </button>
+            </div>
+            {
+              this.state.audio
+                ?
+                <Visualizer
+                  recording={this.state.recording}
+                  audio={this.state.audio}
+                  height={100}
+                  width={300} />
+                : null
+            }
+          </Row>
         </ModalBody>
         <ModalFooter>
-        <audio disabled controls src={this.state.audioURL} />
+          <audio disabled controls src={this.state.audioURL} />
           {
             this.state.noAudioErr
               ?
@@ -153,8 +152,7 @@ export default class AudioModal extends Component {
           }
           <Button color="primary" onClick={() => this.uploadBlob()}>Save</Button>{' '}
           <Button color="secondary" onClick={() => {
-            this.stopMicrophone()
-            this.props.toggle()
+            this.toggleStopRecording()
           }}>Cancel</Button>
         </ModalFooter>
       </Modal>
