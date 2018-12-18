@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import { Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
+import { Row, Col, Alert, Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap'
 import 'firebase'
 import userSession from './../../modules/userSession'
+import Visualizer from './visualizer'
+import recordIcon from './../../../src/images/recordericon.png'
+import stopIcon from './../../../src/images/stopIcon.ico'
+import './audioModal.css'
 
 
 export default class AudioModal extends Component {
@@ -23,7 +27,6 @@ export default class AudioModal extends Component {
     }).then((audio) => {
       this.setState({ audio })
       this.recorder()
-
     })
       .catch((audio) => {
         // catch errors if user blocks mic
@@ -107,9 +110,9 @@ export default class AudioModal extends Component {
 
   toggleStopRecording = () => {
     this.stopMicrophone()
+    this.setState({ recording: false })
     this.props.toggle()
   }
-
 
   render() {
     if (this.props.modal && this.state.audio === null) {
@@ -119,20 +122,42 @@ export default class AudioModal extends Component {
     return (
       <Modal isOpen={this.props.modal} toggle={this.toggleStopRecording} className={this.props.className}>
         <ModalHeader toggle={this.toggleStopRecording}>
+        Press Record Button to begin.
         </ModalHeader>
-        <ModalBody>
-          <div className="App">
-            <main>
-              <div className="controls">
-                <button onClick={() => this.toggleRecording()}>
-                  {this.state.recording ? 'Stop' : 'Start Recording'}
-                </button>
-                <audio controls src={this.state.audioURL} />
-              </div>
-            </main>
-          </div>
+        <ModalBody className="d-flex justify-content-center">
+          <Row>
+            <Col xs="2" className="controls d-flex align-items-center justify-content-center">
+              {
+                this.state.recording
+                  ?
+                  <img
+                    src={stopIcon}
+                    className="stop-icon"
+                    alt="recorder stop icon"
+                    onClick={() => {
+                      this.toggleRecording()
+                    }}></img>
+                  :
+                  <img
+                    src={recordIcon}
+                    className="record-icon"
+                    alt="recorder start icon"
+                    onClick={() => {
+                      this.toggleRecording()
+                    }}></img>
+              }
+            </Col>
+            <Col>
+              <Visualizer
+                recording={this.state.recording}
+                audio={this.state.audio}
+                height={100}
+                width={300} />
+            </Col>
+          </Row>
         </ModalBody>
         <ModalFooter>
+          <audio disabled controls src={this.state.audioURL} />
           {
             this.state.noAudioErr
               ?
@@ -142,8 +167,7 @@ export default class AudioModal extends Component {
           }
           <Button color="primary" onClick={() => this.uploadBlob()}>Save</Button>{' '}
           <Button color="secondary" onClick={() => {
-            this.stopMicrophone()
-            this.props.toggle()
+            this.toggleStopRecording()
           }}>Cancel</Button>
         </ModalFooter>
       </Modal>
