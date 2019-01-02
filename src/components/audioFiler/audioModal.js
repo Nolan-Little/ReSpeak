@@ -120,7 +120,7 @@ export default class AudioModal extends Component {
     }
 
     return (
-      <Modal isOpen={this.props.modal} toggle={this.toggleStopRecording} className={this.props.className}>
+      <Modal centered isOpen={this.props.modal} toggle={this.toggleStopRecording} className={this.props.className}>
         <ModalHeader toggle={this.toggleStopRecording}>
         Press Record Button to begin.
         </ModalHeader>

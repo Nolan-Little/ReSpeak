@@ -58,7 +58,7 @@ export default class NoteDetails extends Component {
 
         ?
         // ALLOW EDITING
-        <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
+        <Modal centered isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
             <Row>
               <Col xs={{ size: 'auto', offset: 1 }}>
@@ -96,7 +96,7 @@ export default class NoteDetails extends Component {
 
         :
         // NOT EDITING
-        <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
+        <Modal centered isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>
             <Row>
               <Col xs={{ size: 'auto', offset: 1 }}>

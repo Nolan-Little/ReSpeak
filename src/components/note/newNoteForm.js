@@ -157,7 +157,7 @@ export default class NewNoteForm extends Component {
 
   render() {
     return (
-      <Modal isOpen={this.props.modal} toggle={this.deleteAudioandToggle} className={this.props.className}>
+      <Modal centered isOpen={this.props.modal} toggle={this.deleteAudioandToggle} className={this.props.className}>
         <Form onSubmit={(e) => this.handleNoteFormSubmit(e)}>
           <ModalHeader toggle={this.deleteAudioandToggle}>
             <Input maxLength="27" onChange={this.handleFieldChange} id="title" type="text" placeholder="New Note"></Input>

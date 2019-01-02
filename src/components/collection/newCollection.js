@@ -42,7 +42,7 @@ export default class NewCollectionForm extends Component {
 
   render() {
     return (
-      <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
+      <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={`${this.props.className}`} centered>
         <Form onSubmit={(e) => this.handleColFormSubmit(e)}>
           <ModalHeader toggle={this.props.toggle}>
             <Input maxLength="27" onFocus={(e)=> e.target.value = ""} onChange={this.handleFieldChange} id="title" type="text" required defaultValue={"My Collection"}></Input>
