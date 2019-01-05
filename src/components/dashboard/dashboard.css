@@ -1,5 +1,4 @@
 
-
 .dashboard--container {
   margin-top: 7vh;
   border: solid 2px rgb(59, 55, 55);
@@ -15,6 +14,7 @@ div.dashboard--row {
 }
 
 div.collection--bar {
+  background-color: #FFFFFF;
   justify-self: flex-start;
   border-right: solid 2px rgb(59, 55, 55);
   padding: 0px;
@@ -24,9 +24,14 @@ div.collection--bar {
 
 
 div.dashboard--header.row {
+  background-color: #FFFFFF;
   padding-top: 5px;
   display: flex;
   border-bottom: solid 2px rgb(59, 55, 55);
+}
+
+ul#noteContainer{
+  background-color: #FFFFFF;
 }
 
 div.dashboard__note--group{
