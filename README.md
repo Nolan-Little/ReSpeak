@@ -3,15 +3,19 @@ ReSpeak is a dictaphone and note taking application for recording whats on your 
 
 ### New User
 A first time user logging in will see the following dashboard. A default collection waiting to be filled! User's can start by adding a new note or by renaming their default collection.
+
 ![Demo gif of creating a new note. ](https://github.com/Nolan-Little/ReSpeak/blob/master/demo%20gifs/firstNote.gif)
 
+
 A user can also create new collections to organize their notes. These collections will populate the sidebar in the dashboard.
+This application has full CRUD capability for both notes and collections including moving a note between collections. 
+
+![Demo gif of creating a new collection](https://github.com/Nolan-Little/ReSpeak/blob/master/demo%20gifs/NewCollection.gif)
 
 
 When a user wants to create a new note they are shown options to add a title and text content as well as to record audio. 
 
-
-This application has full CRUD capability for both notes and collections including moving a note between collections. 
+![Demo gif of recording audio](https://github.com/Nolan-Little/ReSpeak/blob/master/demo%20gifs/RecordAudio.gif)
 
 ## Technologies
 
