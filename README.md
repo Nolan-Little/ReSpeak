@@ -3,7 +3,7 @@ ReSpeak is a dictaphone and note taking application for recording whats on your 
 
 ### New User
 A first time user logging in will see the following dashboard. A default collection waiting to be filled! User's can start by adding a new note or by renaming their default collection.
-
+![Alt text](../demo_gifs/firstNote.gif)
 
 A user can also create new collections to organize their notes. These collections will populate the sidebar in the dashboard.
 
@@ -27,7 +27,7 @@ in the root directory of the project. Once everything has installed and updated:
 ```
 npm start
 ```
-
+You will also need json-server for the mock database. This can be installed via npm as well. 
 From the root directory navigate to the directory titled api and execute the following to serve up the data for the app utilizing JSON server:
 ```
 json-server -p 8088 -w database.json
