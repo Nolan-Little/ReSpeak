@@ -1,0 +1,159 @@
+{
+  "users": [
+    {
+      "email": "nolan@email.com",
+      "password": "test",
+      "id": 1
+    }
+  ],
+  "collections": [
+    {
+      "title": "My Collection",
+      "userId": 1,
+      "deleted": false,
+      "id": 2
+    },
+    {
+      "title": "My First Notes",
+      "userId": 1,
+      "deleted": false,
+      "id": 3
+    }
+  ],
+  "notes": [
+    {
+      "title": "Styling",
+      "textContent": "Empty Note",
+      "timestamp": 1544755954790,
+      "collectionId": 2,
+      "isPinned": false,
+      "reminder": false,
+      "id": 22
+    },
+    {
+      "title": "Hand to Hand Idea",
+      "textContent": "Empty Note",
+      "timestamp": "Jan 8, 2019 9:27 AM",
+      "collectionId": 2,
+      "isPinned": false,
+      "reminder": false,
+      "id": 25
+    },
+    {
+      "title": "Groceries 10/11",
+      "textContent": "Broccoli, bananas",
+      "timestamp": "Jan 8, 2019 9:27 AM",
+      "collectionId": 2,
+      "isPinned": false,
+      "reminder": false,
+      "id": 28
+    },
+    {
+      "title": "Week 1 Feedback",
+      "textContent": "Empty Note",
+      "timestamp": "Jan 8, 2019 9:27 AM",
+      "collectionId": 2,
+      "isPinned": false,
+      "reminder": false,
+      "id": 31
+    },
+    {
+      "title": "shopping",
+      "textContent": "bananas",
+      "timestamp": 1546533478111,
+      "collectionId": 4,
+      "isPinned": false,
+      "reminder": false,
+      "id": 44
+    },
+    {
+      "title": "Grocery List 1/4/19",
+      "textContent": "Bananas,\nBlueberries,\nPeanut Butter",
+      "timestamp": "Jan 8, 2019 10:53 AM",
+      "collectionId": 17,
+      "isPinned": false,
+      "reminder": false,
+      "id": 51
+    },
+    {
+      "title": "First Audio Recording",
+      "textContent": "Mic Check.",
+      "timestamp": 1546966797025,
+      "collectionId": 13,
+      "isPinned": false,
+      "reminder": false,
+      "id": 52
+    }
+  ],
+  "audio_notes": [
+    {
+      "audio_filesId": 15,
+      "noteId": 38,
+      "id": 13
+    },
+    {
+      "audio_filesId": 16,
+      "noteId": 40,
+      "id": 14
+    },
+    {
+      "audio_filesId": 18,
+      "noteId": 47,
+      "id": 16
+    },
+    {
+      "audio_filesId": 19,
+      "noteId": 49,
+      "id": 17
+    },
+    {
+      "audio_filesId": 20,
+      "noteId": 52,
+      "id": 18
+    }
+  ],
+  "audio_files": [
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser2%2Faudio21544713765321.ogg?alt=media&token=4589c62e-72ee-4ccb-8402-19ed9340fd6f",
+      "ref": "audio21544713765321.ogg",
+      "id": 3
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser1%2Faudio51544756059692.ogg?alt=media&token=b3edf760-a994-45f0-b06c-bd6a5e9a1ec3",
+      "ref": "audio51544756059692.ogg",
+      "id": 8
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser3%2Faudio101545656913355.ogg?alt=media&token=58c52584-ffb4-4265-8762-f3e40f40d7e1",
+      "ref": "audio101545656913355.ogg",
+      "id": 15
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser2%2Faudio121546445399918.ogg?alt=media&token=a683f107-9dc5-4152-a14f-af6ea3111bff",
+      "ref": "audio121546445399918.ogg",
+      "id": 16
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser1%2Faudio21546735814223.ogg?alt=media&token=57e358df-6f66-47a3-8d65-b152c2059125",
+      "ref": "audio21546735814223.ogg",
+      "id": 18
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser5%2Faudio151546791541387.ogg?alt=media&token=219652e9-ea0e-4f2c-ab26-adf5ed3beeb3",
+      "ref": "audio151546791541387.ogg",
+      "id": 19
+    },
+    {
+      "name": "Audio Note",
+      "url": "https://firebasestorage.googleapis.com/v0/b/respeak-d5f08.appspot.com/o/audio.ogg%2Fuser4%2Faudio131546966772987.ogg?alt=media&token=da2d9aa6-006a-4e4f-8c96-3c9ec4a3471a",
+      "ref": "audio131546966772987.ogg",
+      "id": 20
+    }
+  ],
+}
